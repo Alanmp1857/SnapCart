@@ -1,42 +1,113 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Ensure full viewport height */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Split screen layout */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  padding-top: 20px;
+}
+
+/* Left and Right Sections */
+.left {
+  left: 0;
+  background-color: lightblue;
+}
+
+.right {
+  right: 0;
+  background-color: lightyellow;
+}
+
+/* Centered content */
+.centered {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
+  width: auto; /* Prevents overflow */
+  max-width: 80%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Image inside the centered container */
+.centered img {
+  max-width: 100%;
+  height: auto;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Adjust Image 1 */
+.img-1 {
+  width: 80%;
+  max-width: 200px;
+  border-radius: 5px;
+  transform: scale(2);
+}
+
+/* Image Container */
+.img-container {
+  width: 100%;
+  display: flex;
+  position: relative;
+  top: 65%;
+  left: 10%;
+}
+
+/* Adjust Image 3 */
+.img-3 {
+  width: 20%;
+  max-width: 200px;
+  border-radius: 10px;
+  display: block;
+  margin: 5% 0 0 0;
+  transform: scale(0.8);
+}
+
+/* 🌍 Responsive Design */
+@media screen and (max-width: 768px) {
+  /* Stack sections vertically */
+  .split {
+    width: 100%;
+    height: 50%;
+    position: relative;
   }
-  to {
-    transform: rotate(360deg);
+
+  .left,
+  .right {
+    width: 100%;
+    height: 50%;
+    position: relative;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  /* Adjust centered content */
+  .centered {
+    top: 50%;
+    width: 90%;
   }
-}
 
-.card {
-  padding: 2em;
-}
+  /* Improve image responsiveness */
+  .img-1 {
+    width: 90%;
+    max-width: 250px;
+  }
 
-.read-the-docs {
-  color: #888;
+  .img-container {
+    top: 10%;
+  }
+
+  .img-3 {
+    width: 50%;
+    max-width: 180px;
+  }
 }
