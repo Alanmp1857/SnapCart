@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import Popup from "../../pages/AuthPopup";
+import { RootState } from "../../store/store";
+import { toggleTheme } from "../../store/reducers/themeSlice";
 
 const pages = ["Dashboard", "Pricing", "Blog"];
 
@@ -20,6 +23,15 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [auth, setAuth] = useState("signup");
+  const dispatch = useDispatch();
+
+  const { theme, backgroundColor } = useSelector(
+    (state: RootState) => state.theme
+  );
+
+  const handleThemeToggle = () => {
+    dispatch(toggleTheme());
+  };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -33,14 +45,17 @@ function Header() {
     setAnchorElNav(null);
   };
 
-  const handleClose=()=>{
-    setOpen(false)
-  }
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
       {" "}
-      <AppBar position="static" sx={{ backgroundColor: "purple" }}>
+      <AppBar
+        position="static"
+        sx={{ backgroundColor: theme === "light" ? "#2D2638" : "#E3DDFF", color:backgroundColor}}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -119,16 +134,22 @@ function Header() {
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{ my: 2, color:"inherit", display: "block" }}
                 >
                   {page}
                 </Button>
               ))}
               <Button
-                onClick={()=>setOpen(true)}
-                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={() => setOpen(true)}
+                sx={{ my: 2, color: "inherit", display: "block" }}
               >
                 Login
+              </Button>
+              <Button
+                onClick={handleThemeToggle}
+                sx={{ my: 2, color: "inherit", display: "block" }}
+              >
+                {theme}
               </Button>
             </Box>
             <Box sx={{ flexGrow: 0 }}>
@@ -141,7 +162,12 @@ function Header() {
           </Toolbar>
         </Container>
       </AppBar>
-      <Popup open={open} onClose={handleClose} auth={auth} setAuth={handleAuthChange}/>
+      <Popup
+        open={open}
+        onClose={handleClose}
+        auth={auth}
+        setAuth={handleAuthChange}
+      />
     </>
   );
 }
