@@ -9,6 +9,8 @@ const CustomButton = (props: { name: string }) => {
         "&:hover": {},
         color: "black",
         border: "1px solid black",
+        marginLeft: "5px",
+        backgroundColor: "grey",
       }}
       disableRipple>
       {props.name}
