@@ -9,7 +9,6 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 // import { useSelector } from "react-redux";
 // import { RootState } from "../../Redux/Store";
 // import Login from "../Login/Login";

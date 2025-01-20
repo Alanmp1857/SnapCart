@@ -1,18 +1,5 @@
 {
-  "userdata": [
-    {
-      "id": "886b",
-      "name": "harsha",
-      "email": "harsha@gmail.com",
-      "password": "sreeharsha"
-    },
-    {
-      "id": "dc61",
-      "name": "akash",
-      "email": "akash@gmail.com",
-      "password": "akashadak"
-    }
-  ],
+  "userdata": [],
   "categories": [
     {
       "slug": "beauty",
