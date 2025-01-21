@@ -1,20 +1,16 @@
-import { useState } from "react";
-// import "../../App.css";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import "./Product.css";
 import CustomButton from "../../components/CustomButton";
-import Rating from "@mui/material/Rating";
 import Divider from "@mui/material/Divider";
 import PlusMinusButton from "../../components/PlusMinusButton";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import RatingBar from "../../components/RatingBar";
 
 const Product = () => {
-  const [value, setValue] = useState<number | null>(2);
-
   const { backgroundColor } = useSelector((state: RootState) => state.theme);
 
   return (
@@ -55,28 +51,13 @@ const Product = () => {
         <Box className="product-info">
           <Box>
             <Typography variant="h4">Sony Headphones</Typography>
-            <Typography variant="body1" sx={{ mt: 2 }}>
+            <Typography variant="body1" sx={{ my: 2 }}>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor
               ipsa dolores sed laboriosam blanditiis repellat qui quisquam
               soluta harum eius aut nam quos atque possimus magni molestias,
               aliquid, maxime modi?e
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                mt: 2,
-              }}>
-              <Rating
-                name="simple-controlled"
-                sx={{ mr: 1 }}
-                value={value}
-                onChange={(_, newValue) => {
-                  setValue(newValue);
-                }}
-              />
-              <Typography>(121)</Typography>
-            </Box>
+            <RatingBar />
           </Box>
 
           <Divider sx={{ backgroundColor: "#e5e5e5" }} />
