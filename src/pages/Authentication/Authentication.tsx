@@ -1,27 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Modal,
   Box,
-  IconButton,
   Typography,
   TextField,
   Button,
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../Redux/Store";
-// import Login from "../Login/Login";
-// import Register from "../Register/Register";
+import UserService from "../../services/userService";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/reducers/userSlice";
 
-export interface PopupProps {
+export type Props = {
   open: boolean;
   onClose: () => void;
   auth: string;
   setAuth: () => void;
-}
+};
 
-const Popup: React.FC<PopupProps> = ({ open, onClose, auth, setAuth }) => {
+const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
+  const dispatch = useDispatch();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -29,6 +28,7 @@ const Popup: React.FC<PopupProps> = ({ open, onClose, auth, setAuth }) => {
     lastName: "",
     terms: false,
   });
+
   // const auth = useSelector((state: RootState) => state.auth.auth);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, value, checked } = e.target;
@@ -36,11 +36,61 @@ const Popup: React.FC<PopupProps> = ({ open, onClose, auth, setAuth }) => {
       ...values,
       [name]: type === "checkbox" ? checked : value, // Use `checked` for checkboxes, `value` otherwise
     });
-    console.log(values);
   };
 
   const handleSignUp = () => {
-    console.log(values);
+    UserService.addUsers({
+      userName: values.firstName + " " + values.lastName,
+      email: values.email,
+      password: values.password,
+    })
+      .then((res) => {
+        // Assuming a successful response has a status code of 200
+        if (res.status === 200 || res.status === 201) {
+          console.log("User added successfully:", res.data);
+          setAuth()
+        } else {
+          console.error("Unexpected response:", res);
+        }
+      })
+      .catch((error) => {
+        // Handling errors such as network issues or server errors
+        if (error.response) {
+          // Server responded with a status code outside the 2xx range
+          console.error("Error adding user:", error.response.data);
+        } else if (error.request) {
+          // Request was made but no response received
+          console.error("No response received:", error.request);
+        } else {
+          // Something else happened
+          console.error("Error occurred:", error.message);
+        }
+      });
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await UserService.getAllUsers();
+      const users = response.data;
+
+      // Find user with matching email and password
+      const validUser = users.find(
+        (user: any) =>
+          user.email === values.email && user.password === values.password
+      );
+
+      if (validUser) {
+        dispatch(setUser({ username: validUser.userName, email: validUser.email }));
+        onClose();
+      } else {
+        console.error("Authentication failed: Invalid email or password");
+      }
+    } catch (error: any) {
+      console.error(
+        "Authentication failed:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   return (
@@ -247,11 +297,12 @@ const Popup: React.FC<PopupProps> = ({ open, onClose, auth, setAuth }) => {
           <Button
             fullWidth
             variant="contained"
-            onClick={handleSignUp}
+            onClick={auth === "signup" ? handleSignUp : handleLogin}
             sx={{
               backgroundColor: "rgb(138, 74, 255)",
               "&:hover": { backgroundColor: "rgb(118, 58, 214)" },
             }}
+            disabled={auth === "signup" ? !values.terms : false}
           >
             {auth === "signup" ? "Create account" : "Log in"}
           </Button>
@@ -261,4 +312,4 @@ const Popup: React.FC<PopupProps> = ({ open, onClose, auth, setAuth }) => {
   );
 };
 
-export default Popup;
+export default Authentication;

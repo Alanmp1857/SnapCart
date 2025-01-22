@@ -13,22 +13,24 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
-import Popup from "../../pages/AuthPopup";
+import Authentication from "../../pages/Authentication/Authentication";
 import { RootState } from "../../store/store";
 import { toggleTheme } from "../../store/reducers/themeSlice";
 import SearchBar from "../../components/SearchBar";
+import { setUser } from "../../store/reducers/userSlice";
 
 const pages = ["Dashboard", "Pricing", "Blog"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
-  const [auth, setAuth] = useState("signup");
+  const [auth, setAuth] = useState("login");
   const dispatch = useDispatch();
 
   const { theme, backgroundColor } = useSelector(
     (state: RootState) => state.theme
   );
+  const { user } = useSelector((state: RootState) => state.user);
 
   const handleThemeToggle = () => {
     dispatch(toggleTheme());
@@ -58,7 +60,8 @@ function Header() {
         sx={{
           backgroundColor: theme === "light" ? "#2D2638" : "#E3DDFF",
           color: backgroundColor,
-        }}>
+        }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -74,7 +77,8 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}>
+              }}
+            >
               Snap Cart
             </Typography>
 
@@ -83,9 +87,10 @@ function Header() {
                 size="large"
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
-                aria-haspopup="true"
+                aria-hasAuthentication="true"
                 onClick={handleOpenNavMenu}
-                color="inherit">
+                color="inherit"
+              >
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -102,7 +107,8 @@ function Header() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}>
+                sx={{ display: { xs: "block", md: "none" } }}
+              >
                 {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
                     <Typography sx={{ textAlign: "center" }}>{page}</Typography>
@@ -125,7 +131,8 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}>
+              }}
+            >
               LOGO
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -133,18 +140,15 @@ function Header() {
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "inherit", display: "block" }}>
+                  sx={{ my: 2, color: "inherit", display: "block" }}
+                >
                   {page}
                 </Button>
               ))}
               <Button
-                onClick={() => setOpen(true)}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
-                Login
-              </Button>
-              <Button
                 onClick={handleThemeToggle}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
+                sx={{ my: 2, color: "inherit", display: "block" }}
+              >
                 {theme}
               </Button>
             </Box>
@@ -152,16 +156,39 @@ function Header() {
               <SearchBar />
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="You">
-                <IconButton sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
+              {user.username ? (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Tooltip title="You">
+                    <IconButton sx={{ p: 0 }}>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src="/static/images/avatar/2.jpg"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <Typography sx={{ ml: 1 }}>{user.username}</Typography>
+                  <Button
+                    onClick={() =>
+                      dispatch(setUser({ username: "", email: "" }))
+                    }
+                    sx={{ my: 2, color: "inherit", display: "block" }}
+                  >
+                    Logout
+                  </Button>
+                </Box>
+              ) : (
+                <Button
+                  onClick={() => setOpen(true)}
+                  sx={{ my: 2, color: "inherit", display: "block" }}
+                >
+                  Login
+                </Button>
+              )}
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
-      <Popup
+      <Authentication
         open={open}
         onClose={handleClose}
         auth={auth}
