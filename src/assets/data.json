@@ -1,5 +1,18 @@
 {
-  "userdata": [],
+  "userdata": [
+    {
+      "id": "c60a",
+      "userName": "harsha k",
+      "email": "email@gmail.com",
+      "password": "password"
+    },
+    {
+      "id": "1fbc",
+      "userName": "alan alan",
+      "email": "gmail@gmail.com",
+      "password": "password"
+    }
+  ],
   "categories": [
     {
       "slug": "beauty",
