@@ -57,7 +57,7 @@ const Product = () => {
               soluta harum eius aut nam quos atque possimus magni molestias,
               aliquid, maxime modi?e
             </Typography>
-            <RatingBar />
+            <RatingBar reviews={[]} />
           </Box>
 
           <Divider sx={{ backgroundColor: "#e5e5e5" }} />

@@ -18,6 +18,7 @@ import { RootState } from "../../store/store";
 import { toggleTheme } from "../../store/reducers/themeSlice";
 import SearchBar from "../../components/SearchBar";
 import { setUser } from "../../store/reducers/userSlice";
+import SearchResultList from "../../components/SearchResultList";
 
 const pages = ["Dashboard", "Pricing", "Blog"];
 
@@ -25,6 +26,8 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [auth, setAuth] = useState("login");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   const dispatch = useDispatch();
 
   const { theme, backgroundColor } = useSelector(
@@ -60,8 +63,7 @@ function Header() {
         sx={{
           backgroundColor: theme === "light" ? "#2D2638" : "#E3DDFF",
           color: backgroundColor,
-        }}
-      >
+        }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -77,8 +79,7 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
+              }}>
               Snap Cart
             </Typography>
 
@@ -89,8 +90,7 @@ function Header() {
                 aria-controls="menu-appbar"
                 aria-hasAuthentication="true"
                 onClick={handleOpenNavMenu}
-                color="inherit"
-              >
+                color="inherit">
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -107,8 +107,7 @@ function Header() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}
-              >
+                sx={{ display: { xs: "block", md: "none" } }}>
                 {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
                     <Typography sx={{ textAlign: "center" }}>{page}</Typography>
@@ -131,8 +130,7 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
+              }}>
               LOGO
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -140,20 +138,34 @@ function Header() {
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "inherit", display: "block" }}
-                >
+                  sx={{ my: 2, color: "inherit", display: "block" }}>
                   {page}
                 </Button>
               ))}
               <Button
                 onClick={handleThemeToggle}
-                sx={{ my: 2, color: "inherit", display: "block" }}
-              >
+                sx={{ my: 2, color: "inherit", display: "block" }}>
                 {theme}
               </Button>
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              <SearchBar />
+              <SearchBar onSearch={setSearchQuery} />
+            </Box>
+            <Box
+              style={{
+                position: "fixed",
+                top: 60,
+                right: 0,
+                left: 850,
+                width: "80%",
+              }}>
+              <h1>{searchQuery}</h1>
+              {searchQuery && (
+                <SearchResultList
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
+              )}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
               {user.username ? (
@@ -171,16 +183,14 @@ function Header() {
                     onClick={() =>
                       dispatch(setUser({ username: "", email: "" }))
                     }
-                    sx={{ my: 2, color: "inherit", display: "block" }}
-                  >
+                    sx={{ my: 2, color: "inherit", display: "block" }}>
                     Logout
                   </Button>
                 </Box>
               ) : (
                 <Button
                   onClick={() => setOpen(true)}
-                  sx={{ my: 2, color: "inherit", display: "block" }}
-                >
+                  sx={{ my: 2, color: "inherit", display: "block" }}>
                   Login
                 </Button>
               )}

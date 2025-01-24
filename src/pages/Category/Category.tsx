@@ -8,10 +8,10 @@ const Category = () => {
 
   const getAllCategories = async () => {
     try {
-      const response = await ProductService.GetAllCategories();
+      const response = await ProductService.getAllCategories();
       const categories = response.data; // Assuming this matches the categories JSON structure
       setCategories(categories);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Fetch failed:", error.response?.data || error.message);
     }
   };
@@ -33,8 +33,7 @@ const Category = () => {
           padding: 3,
           justifyContent: "center",
           overflowY: "auto",
-        }}
-      >
+        }}>
         {categories.length > 0 ? (
           categories.map((category: any) => (
             <CategoryCard

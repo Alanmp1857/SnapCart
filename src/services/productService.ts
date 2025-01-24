@@ -1,21 +1,21 @@
-import axios from "axios"
+import axios from "axios";
 
-const GetAllProducts=()=>{
-    return axios.get("http://localhost:4000/products")
-}
+const getAllProducts = () => {
+  return axios.get("http://localhost:4000/products");
+};
 
-const GetAllCategories=()=>{
-    return axios.get("http://localhost:4000/categories")
-}
+const getAllCategories = () => {
+  return axios.get("http://localhost:4000/categories");
+};
 
-const GetProductsByCategory=(text:string)=>{
-    return axios.get(`https://dummyjson.com/products/category/${text}`)
-}
+const getProductsByCategory = (text: string) => {
+  return axios.get(`https://dummyjson.com/products/category/${text}`);
+};
 
-const ProductService={
-    GetAllCategories,
-    GetAllProducts,
-    GetProductsByCategory
-}
+const ProductService = {
+  getAllCategories,
+  getAllProducts,
+  getProductsByCategory,
+};
 
-export default ProductService
+export default ProductService;

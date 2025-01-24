@@ -1,6 +1,8 @@
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
+import { useEffect, useState } from "react";
+import { SearchBarProps } from "../models/SearchBar.interface";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -44,7 +46,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const SearchBar = () => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const [query, setQuery] = useState<string>("");
+  const [debouncedQuery, setDebouncedQuery] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (query.length >= 3) {
+        setDebouncedQuery(query);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  useEffect(() => {
+    if (debouncedQuery.trim()) {
+      onSearch(debouncedQuery);
+    }
+  }, [debouncedQuery, onSearch]);
+
   return (
     <div>
       <Search>
@@ -54,6 +75,8 @@ const SearchBar = () => {
         <StyledInputBase
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
       </Search>
     </div>

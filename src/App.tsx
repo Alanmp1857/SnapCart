@@ -1,7 +1,7 @@
 import "./App.css";
-import SearchPage from "./components/SearchPage";
+// import SearchResultList from "./components/SearchResultList";
 import Header from "./layout/Header/Header";
-import Category from "./pages/Category/Category";
+// import Category from "./pages/Category/Category";
 // import Home from "./pages/Home/Home";
 // import ItemCard from "./components/ItemCard";
 // import Product from "./pages/Product/Product";
@@ -13,8 +13,8 @@ function App() {
       <Header />
       {/* <Product /> */}
       {/* <Home /> */}
-      <SearchPage />
-      <Category/>
+      {/* <SearchResultList /> */}
+      {/* <Category/> */}
     </>
   );
 }
