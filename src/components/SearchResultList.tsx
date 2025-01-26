@@ -43,7 +43,7 @@ const SearchResultList: React.FC<SearchResultListProps> = ({ searchQuery }) => {
   );
 
   return (
-    <Box>
+    <Box sx={{ borderRadius: 5, backgroundColor: "black" }}>
       <Box>
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}

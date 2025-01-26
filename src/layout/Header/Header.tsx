@@ -57,7 +57,6 @@ function Header() {
 
   return (
     <>
-      {" "}
       <AppBar
         position="static"
         sx={{
@@ -159,7 +158,6 @@ function Header() {
                 left: 850,
                 width: "80%",
               }}>
-              <h1>{searchQuery}</h1>
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}

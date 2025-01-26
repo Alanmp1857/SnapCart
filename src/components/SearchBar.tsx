@@ -52,18 +52,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (query.length >= 3) {
-        setDebouncedQuery(query);
-      }
+      setDebouncedQuery(query);
     }, 300);
 
     return () => clearTimeout(timer);
   }, [query]);
 
   useEffect(() => {
-    if (debouncedQuery.trim()) {
-      onSearch(debouncedQuery);
-    }
+    onSearch(debouncedQuery.trim()); // Always update search, even if empty
   }, [debouncedQuery, onSearch]);
 
   return (
