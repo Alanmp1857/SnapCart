@@ -17,6 +17,10 @@ const addUsers = (newUser: any) => {
     return axios.post(BASE_URL, newUser);
 };
 
+const putUser = (id:string,newUser: any) => {
+    return axios.put(`${BASE_URL}/${id}`, newUser);
+};
+
 // Delete a user
 const deleteUser = (id: string) => {
     return axios.delete(`${BASE_URL}/${id}`);
@@ -29,6 +33,7 @@ const updateUserPassword = (id: string, passwords: { oldPassword: string, newPas
 
 const UserService = {
     addUsers,
+    putUser,
     deleteUser,
     getAllUsers,
     getUserById,

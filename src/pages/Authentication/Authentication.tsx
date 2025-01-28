@@ -48,7 +48,7 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
         // Assuming a successful response has a status code of 200
         if (res.status === 200 || res.status === 201) {
           console.log("User added successfully:", res.data);
-          setAuth()
+          setAuth();
         } else {
           console.error("Unexpected response:", res);
         }
@@ -80,7 +80,18 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
       );
 
       if (validUser) {
-        dispatch(setUser({ username: validUser.userName, email: validUser.email }));
+        console.log({
+          id: validUser.id,
+          username: validUser.userName,
+          email: validUser.email,
+        });
+        dispatch(
+          setUser({
+            id: validUser.id,
+            username: validUser.userName,
+            email: validUser.email,
+          })
+        );
         onClose();
       } else {
         console.error("Authentication failed: Invalid email or password");

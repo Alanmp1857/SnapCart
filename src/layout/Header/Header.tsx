@@ -10,7 +10,6 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import Authentication from "../../pages/Authentication/Authentication";
@@ -163,6 +162,7 @@ function Header() {
             <Box
               style={{
                 position: "fixed",
+                zIndex: 100,
                 top: 60,
                 right: 0,
                 left: 850,
