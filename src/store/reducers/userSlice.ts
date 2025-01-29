@@ -1,11 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
-  name: 'user',
-  initialState: { user: { username: '', email: '' } },
+  name: "user",
+  initialState: {
+    user: {
+      id: "",
+      username: "",
+      email: "",
+      address: "",
+      city: "",
+      zipCode: "",
+      mobile: "",
+      password: "",
+    },
+  },
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload; // Update the entire user object
+      state.user = { ...state.user, ...action.payload }; // Merge updates instead of replacing
     },
   },
 });

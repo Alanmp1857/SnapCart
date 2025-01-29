@@ -40,7 +40,7 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
 
   const handleSignUp = () => {
     UserService.addUsers({
-      userName: values.firstName + " " + values.lastName,
+      username: values.firstName + " " + values.lastName,
       email: values.email,
       password: values.password,
     })
@@ -48,7 +48,7 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
         // Assuming a successful response has a status code of 200
         if (res.status === 200 || res.status === 201) {
           console.log("User added successfully:", res.data);
-          setAuth()
+          setAuth();
         } else {
           console.error("Unexpected response:", res);
         }
@@ -80,7 +80,8 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
       );
 
       if (validUser) {
-        dispatch(setUser({ username: validUser.userName, email: validUser.email }));
+        console.log("Authentication successful:", validUser);
+        dispatch(setUser(validUser));
         onClose();
       } else {
         console.error("Authentication failed: Invalid email or password");
@@ -261,6 +262,11 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
             type="password"
             variant="outlined"
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                auth === "signup" ? handleSignUp() : handleLogin();
+              }
+            }}
             sx={{
               input: { color: "white" },
               ".MuiInputLabel-root": { color: "white" },

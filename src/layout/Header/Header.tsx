@@ -10,7 +10,6 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import Authentication from "../../pages/Authentication/Authentication";
@@ -151,7 +150,7 @@ function Header() {
                 Products
               </Button>
               <Button
-                onClick={() =>navigate("/category")}
+                onClick={() => navigate("/category")}
                 sx={{ my: 2, color: "inherit", display: "block" }}
               >
                 Catgories
@@ -163,11 +162,13 @@ function Header() {
             <Box
               style={{
                 position: "fixed",
+                zIndex: 100,
                 top: 60,
                 right: 0,
                 left: 850,
                 width: "80%",
-              }}>
+              }}
+            >
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}
@@ -189,7 +190,18 @@ function Header() {
                   <Typography sx={{ ml: 1 }}>{user.username}</Typography>
                   <Button
                     onClick={() =>
-                      dispatch(setUser({ username: "", email: "" }))
+                      dispatch(
+                        setUser({
+                          id: "",
+                          username: "",
+                          email: "",
+                          address: "",
+                          city: "",
+                          zipCode: "",
+                          mobile: "",
+                          password: "",
+                        })
+                      )
                     }
                     sx={{ my: 2, color: "inherit", display: "block" }}
                   >
