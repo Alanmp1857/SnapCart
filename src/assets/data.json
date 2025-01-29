@@ -1,7 +1,7 @@
 {
   "userdata": [
     {
-      "userName": "harsha k",
+      "username": "harsha k",
       "address": "baner",
       "city": "pune",
       "zipCode": "498289",
@@ -10,22 +10,19 @@
       "id": "c60a"
     },
     {
-      "id": "1fbc",
-      "userName": "alan alan",
-      "email": "gmail@gmail.com",
-      "password": "password"
-    },
-    {
-      "userName": "harsha k",
+      "username": "harsha k",
       "email": "email2@gmail.com",
       "password": "password",
       "id": "9935"
     },
     {
-      "id": "54fb",
-      "userName": "alan alan",
+      "username": "alan alan",
       "email": "alan@alan.alan",
-      "password": "password"
+      "address": "kerala",
+      "city": "thiruvananthapuram",
+      "zipCode": "3838383",
+      "mobile": "39838938938",
+      "id": "54fb"
     }
   ],
   "categories": [

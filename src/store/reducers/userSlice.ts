@@ -11,6 +11,7 @@ const userSlice = createSlice({
       city: "",
       zipCode: "",
       mobile: "",
+      password: "",
     },
   },
   reducers: {

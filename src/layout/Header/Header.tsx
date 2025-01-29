@@ -150,7 +150,7 @@ function Header() {
                 Products
               </Button>
               <Button
-                onClick={() =>navigate("/category")}
+                onClick={() => navigate("/category")}
                 sx={{ my: 2, color: "inherit", display: "block" }}
               >
                 Catgories
@@ -167,7 +167,8 @@ function Header() {
                 right: 0,
                 left: 850,
                 width: "80%",
-              }}>
+              }}
+            >
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}
@@ -189,7 +190,18 @@ function Header() {
                   <Typography sx={{ ml: 1 }}>{user.username}</Typography>
                   <Button
                     onClick={() =>
-                      dispatch(setUser({ username: "", email: "" }))
+                      dispatch(
+                        setUser({
+                          id: "",
+                          username: "",
+                          email: "",
+                          address: "",
+                          city: "",
+                          zipCode: "",
+                          mobile: "",
+                          password: "",
+                        })
+                      )
                     }
                     sx={{ my: 2, color: "inherit", display: "block" }}
                   >

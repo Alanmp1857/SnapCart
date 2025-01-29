@@ -40,7 +40,7 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
 
   const handleSignUp = () => {
     UserService.addUsers({
-      userName: values.firstName + " " + values.lastName,
+      username: values.firstName + " " + values.lastName,
       email: values.email,
       password: values.password,
     })
@@ -80,18 +80,8 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
       );
 
       if (validUser) {
-        console.log({
-          id: validUser.id,
-          username: validUser.userName,
-          email: validUser.email,
-        });
-        dispatch(
-          setUser({
-            id: validUser.id,
-            username: validUser.userName,
-            email: validUser.email,
-          })
-        );
+        console.log("Authentication successful:", validUser);
+        dispatch(setUser(validUser));
         onClose();
       } else {
         console.error("Authentication failed: Invalid email or password");
@@ -272,6 +262,11 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
             type="password"
             variant="outlined"
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                auth === "signup" ? handleSignUp() : handleLogin();
+              }
+            }}
             sx={{
               input: { color: "white" },
               ".MuiInputLabel-root": { color: "white" },
