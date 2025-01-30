@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CounterProps } from "../models/Button.interface";
 import Box from "@mui/material/Box";
 import { Button, styled, Typography } from "@mui/material";
@@ -38,6 +38,11 @@ const PlusMinusButton: React.FC<CounterProps> = ({
   onChange,
 }) => {
   const [count, setCount] = useState<number>(initialValue);
+
+  // Reset count when initialValue prop changes
+  useEffect(() => {
+    setCount(initialValue);
+  }, [initialValue]);
 
   const handleIncrement = () => {
     if (count < max) {

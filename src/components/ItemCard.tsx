@@ -9,18 +9,37 @@ import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Rating from "@mui/material/Rating";
 import CustomButton from "./CustomButton";
+import { ItemCardProps } from "../models/ItemCard.interface";
 
-const ItemCard = () => {
-  const [value, setValue] = useState<number | null>(2);
+const ItemCard: React.FC<ItemCardProps> = ({
+  title,
+  price,
+  thumbnail,
+  rating,
+  brand,
+  reviews,
+  category,
+}) => {
+  const [value, setValue] = useState<number | null>(rating || 0);
   return (
     <Card
       sx={{
-        maxWidth: 250,
+        maxWidth: 280,
+        maxHeight: 400,
+        height: "100%",
         position: "relative",
         boxShadow: "none",
         border: "1px solid #e0e2e4",
+        display: "flex", // Horizontal layout
+        alignItems: "center",
+        overflow: "hidden",
+        backgroundColor: "#f5f5f5",
+        "&:hover": {
+          transform: "scale(1.05)",
+          backgroundColor: "lightgray",
+          border: "1px solid black",
+        },
       }}>
-      {" "}
       {/* Ensure relative positioning for absolute children */}
       <CardActionArea disableRipple>
         {/* Favorite Icon Positioned Over Image */}
@@ -41,47 +60,53 @@ const ItemCard = () => {
         {/* Image */}
         <CardMedia
           component="img"
-          height="180"
-          image="https://wallpapers.com/images/featured/earphone-png-wf7u4siupfmxxyog.jpg"
-          alt="earphone"
+          height="150"
+          image={thumbnail}
+          alt={title}
           sx={{
             objectFit: "contain",
-            backgroundColor: "#e0e2e4",
-            paddingTop: 2,
-            paddingBottom: 2,
+            backgroundColor: "transparent",
           }}
         />
 
         {/* Product Details */}
-        <CardContent>
+        <CardContent sx={{ backgroundColor: "transparent" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography gutterBottom variant="h5">
-              Earphone
+            <Typography variant="h6">
+              {title.length > 20
+                ? title.slice(0, 20) + "..."
+                : title.slice(0, 20)}{" "}
+              | {brand}
             </Typography>
-            <Typography gutterBottom variant="h5">
-              $90.00
-            </Typography>
+            {/* <Typography gutterBottom variant="h6">
+              ${price}
+            </Typography> */}
           </div>
+          <Typography variant="h6">${price}</Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            Best Quality Earphones
+            {category}
           </Typography>
-          <div style={{ display: "flex" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              paddingTop: 2,
+            }}>
             <Rating
               name="simple-controlled"
-              sx={{ paddingTop: 1 }}
               value={value}
               onChange={(_, newValue) => {
                 setValue(newValue);
               }}
             />
-            <p>(121)</p>
+            <p>({reviews?.length})</p>
           </div>
         </CardContent>
+        {/* Share Button */}
+        <CardActions sx={{ marginTop: "-10px" }}>
+          <CustomButton name="Add to Cart" />
+        </CardActions>
       </CardActionArea>
-      {/* Share Button */}
-      <CardActions>
-        <CustomButton name="Add to Cart" />
-      </CardActions>
     </Card>
   );
 };

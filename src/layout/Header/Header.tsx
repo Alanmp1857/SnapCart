@@ -60,8 +60,7 @@ function Header() {
         sx={{
           backgroundColor: theme === "light" ? "#2D2638" : "#E3DDFF",
           color: backgroundColor,
-        }}
-      >
+        }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -69,6 +68,7 @@ function Header() {
               noWrap
               component="a"
               href="#app-bar-with-responsive-menu"
+              onClick={() => navigate("/")}
               sx={{
                 ml: 1,
                 mr: 2,
@@ -77,9 +77,8 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
-              Snap Cart
+              }}>
+              SnapCart
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -89,8 +88,7 @@ function Header() {
                 aria-controls="menu-appbar"
                 aria-hasAuthentication="true"
                 onClick={handleOpenNavMenu}
-                color="inherit"
-              >
+                color="inherit">
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -107,8 +105,7 @@ function Header() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}
-              >
+                sx={{ display: { xs: "block", md: "none" } }}>
                 {/* pending for optimization */}
                 {/* {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -123,6 +120,7 @@ function Header() {
               noWrap
               component="a"
               href="#app-bar-with-responsive-menu"
+              onClick={() => navigate("/")}
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -132,27 +130,23 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
-              LOGO
+              }}>
+              SnapCart
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 onClick={handleThemeToggle}
-                sx={{ my: 2, color: "inherit", display: "block" }}
-              >
+                sx={{ my: 2, color: "inherit", display: "block" }}>
                 {theme}
               </Button>
               <Button
-                onClick={() => navigate("/product")}
-                sx={{ my: 2, color: "inherit", display: "block" }}
-              >
+                onClick={() => navigate("/productlist")}
+                sx={{ my: 2, color: "inherit", display: "block" }}>
                 Products
               </Button>
               <Button
                 onClick={() => navigate("/category")}
-                sx={{ my: 2, color: "inherit", display: "block" }}
-              >
+                sx={{ my: 2, color: "inherit", display: "block" }}>
                 Catgories
               </Button>
             </Box>
@@ -167,8 +161,7 @@ function Header() {
                 right: 0,
                 left: 850,
                 width: "80%",
-              }}
-            >
+              }}>
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}
@@ -203,16 +196,14 @@ function Header() {
                         })
                       )
                     }
-                    sx={{ my: 2, color: "inherit", display: "block" }}
-                  >
+                    sx={{ my: 2, color: "inherit", display: "block" }}>
                     Logout
                   </Button>
                 </Box>
               ) : (
                 <Button
                   onClick={() => setOpen(true)}
-                  sx={{ my: 2, color: "inherit", display: "block" }}
-                >
+                  sx={{ my: 2, color: "inherit", display: "block" }}>
                   Login
                 </Button>
               )}
