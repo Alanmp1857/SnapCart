@@ -1,7 +1,7 @@
 import { Review } from "./SearchCard.interface";
 
 export interface ProductProps {
-  id: string | undefined;
+  id: string;
   title: string;
   description: string;
   price: number;

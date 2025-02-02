@@ -27,6 +27,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
         maxWidth: 280,
         maxHeight: 400,
         height: "100%",
+        width: "300px",
         position: "relative",
         boxShadow: "none",
         border: "1px solid #e0e2e4",

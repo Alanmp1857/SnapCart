@@ -7,6 +7,7 @@ export interface Review {
 }
 
 export interface SearchCardProps {
+  id?: string | undefined;
   images: string[];
   title: string;
   price: number;

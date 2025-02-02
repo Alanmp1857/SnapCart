@@ -15,6 +15,7 @@ const ProductList = () => {
 
   const [results, setResults] = useState<ItemCardProps[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null); // State to handle errors
 
   const fetchProducts = async () => {
     try {
@@ -22,31 +23,36 @@ const ProductList = () => {
       const data = response.data.slice(0, 20);
       setResults(data);
     } catch (error) {
+      setError("Failed to fetch products, please try again later.");
       console.error("Fetch failed: ", error.response?.data || error.message);
+    } finally {
+      setLoading(false); // Turn off loading after the fetch completes
     }
   };
 
   useEffect(() => {
     fetchProducts();
-  }, [results]);
+  }, []);
 
   const handleCardClick = (id: string | undefined) => {
     navigate(`/product/${id}`);
   };
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: backgroundColor }}>
       <Box>
-        <h2
+        {/* <h2
           style={{
             marginLeft: "20px",
             paddingLeft: "20px",
             paddingTop: "20px",
+            color: "inherit",
           }}>
           Popular Products for You!
-        </h2>
+        </h2> */}
       </Box>
       {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>} {/* Display error message if fetch fails */}
       <Grid2
         container
         spacing={{ xs: 2, md: 3 }}

@@ -17,10 +17,7 @@ import ProductService from "../../services/productService";
 const Product = () => {
   const { backgroundColor } = useSelector((state: RootState) => state.theme);
 
-  const [
-    productDetails,
-    setProductDetails,
-  ] = React.useState<ProductProps | null>(null);
+  const [productDetails, setProductDetails] = React.useState<ProductProps>();
 
   const { id } = useParams();
 

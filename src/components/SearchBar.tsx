@@ -1,7 +1,7 @@
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { SearchBarProps } from "../models/SearchBar.interface";
 
 const Search = styled("div")(({ theme }) => ({
@@ -34,8 +34,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`, // spacing for the search icon
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
       width: "12ch",
@@ -50,20 +49,45 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState<string>("");
   const [debouncedQuery, setDebouncedQuery] = useState<string>("");
 
+  const searchBarRef = useRef<HTMLDivElement>(null); // Reference for the search bar container
+
+  // Debouncing logic for search input
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(query);
-    }, 300);
+    }, 300); // Adjust this delay as per your needs
 
     return () => clearTimeout(timer);
   }, [query]);
 
+  // Trigger search function on debounced query
   useEffect(() => {
-    onSearch(debouncedQuery.trim()); // Always update search, even if empty
+    onSearch(debouncedQuery.trim());
   }, [debouncedQuery, onSearch]);
 
+  // Close the search bar if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchBarRef.current &&
+        !searchBarRef.current.contains(event.target as Node)
+      ) {
+        setQuery(""); // Clear the search bar if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleClear = () => {
+    setQuery(""); // Clear the search input
+  };
+
   return (
-    <div>
+    <div ref={searchBarRef}>
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
@@ -73,7 +97,25 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           inputProps={{ "aria-label": "search" }}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onClick={() => {}}
         />
+        {query && (
+          <button
+            style={{
+              position: "absolute",
+              right: 0,
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "none",
+              border: "none",
+              color: "inherit",
+              cursor: "pointer",
+            }}
+            onClick={handleClear}
+            aria-label="clear search">
+            ×
+          </button>
+        )}
       </Search>
     </div>
   );

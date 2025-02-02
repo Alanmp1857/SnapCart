@@ -1,15 +1,18 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Grid2, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ProductService from "../../services/productService";
 import CategoryCard from "../../components/CategoryCard";
+import { useNavigate } from "react-router";
+import { CategoryProps } from "../../models/Category.interface";
 
 const Category = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<CategoryProps[]>([]);
+  const navigate = useNavigate();
 
   const getAllCategories = async () => {
     try {
       const response = await ProductService.getAllCategories();
-      const categories = response.data; // Assuming this matches the categories JSON structure
+      const categories = response.data;
       setCategories(categories);
     } catch (error) {
       console.error("Fetch failed:", error.response?.data || error.message);
@@ -20,8 +23,13 @@ const Category = () => {
     getAllCategories();
   }, []);
 
+  const handleCardClick = (slug: string) => {
+    // Navigate to the category's product page with the slug
+    navigate(`/category/${slug}`);
+  };
+
   return (
-    <>
+    <Box>
       <Typography sx={{ fontWeight: "bold", padding: 2, fontSize: "30px" }}>
         Get All Categories
       </Typography>
@@ -35,19 +43,22 @@ const Category = () => {
           overflowY: "auto",
         }}>
         {categories.length > 0 ? (
-          categories.map((category: any) => (
-            <CategoryCard
+          categories.map((category) => (
+            <Grid2
               key={category.id}
-              name={category.name}
-              itemsAvailable={240} // Replace with actual count if available
-              imageLink={category.imageUrl}
-            />
+              onClick={() => handleCardClick(category.slug)}>
+              <CategoryCard
+                name={category.name}
+                itemsAvailable={240} // Assuming this is dynamic or can be fetched
+                imageLink={category.imageUrl}
+              />
+            </Grid2>
           ))
         ) : (
           <div>Loading categories...</div>
         )}
       </Box>
-    </>
+    </Box>
   );
 };
 

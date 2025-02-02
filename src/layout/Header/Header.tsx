@@ -56,7 +56,7 @@ function Header() {
   return (
     <>
       <AppBar
-        position="static"
+        position="fixed"
         sx={{
           backgroundColor: theme === "light" ? "#2D2638" : "#E3DDFF",
           color: backgroundColor,
@@ -67,13 +67,13 @@ function Header() {
               variant="h6"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
               onClick={() => navigate("/")}
               sx={{
                 ml: 1,
                 mr: 2,
                 display: { xs: "none", md: "flex" },
                 fontWeight: 700,
+                cursor: "pointer",
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
@@ -119,12 +119,12 @@ function Header() {
               variant="h5"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
               onClick={() => navigate("/")}
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
+                cursor: "pointer",
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
@@ -138,11 +138,6 @@ function Header() {
                 onClick={handleThemeToggle}
                 sx={{ my: 2, color: "inherit", display: "block" }}>
                 {theme}
-              </Button>
-              <Button
-                onClick={() => navigate("/productlist")}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
-                Products
               </Button>
               <Button
                 onClick={() => navigate("/category")}
