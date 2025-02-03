@@ -65,8 +65,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
           backgroundColor: "lightgray",
           border: "1px solid black",
         },
-      }}
-    >
+      }}>
       {/* Ensure relative positioning for absolute children */}
       <CardActionArea disableRipple>
         {/* Favorite Icon Positioned Over Image */}
@@ -80,8 +79,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
             backgroundColor: "rgba(255, 255, 255, 0.7)", // Optional: Background for visibility
             borderRadius: "50%",
             "&:hover": { backgroundColor: "transparent" },
-          }}
-        >
+          }}>
           <FavoriteIcon />
         </IconButton>
 
@@ -119,8 +117,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
               display: "flex",
               alignItems: "center",
               paddingTop: 2,
-            }}
-          >
+            }}>
             <Rating
               name="simple-controlled"
               value={value}
@@ -132,16 +129,10 @@ const ItemCard: React.FC<ItemCardProps> = ({
           </div>
         </CardContent>
         {/* Share Button */}
-        <CardActions sx={{ marginTop: "-10px" }}>
-          <CustomButton
-            name="Add to Cart"
-            onClick={(e: any) => handleAddToCart(e)}
-          />
-        </CardActions>
       </CardActionArea>
       <CardActions sx={{ marginTop: "-10px" }}>
-        <CustomButton name="Add to Cart" />
-        <CustomButton name="Buy Now" />
+        <CustomButton name="Add to Cart" onClick={(e) => handleAddToCart(e)} />
+        <CustomButton name="Buy Now" onClick={(e) => handleAddToCart(e)} />
       </CardActions>
     </Card>
   );
