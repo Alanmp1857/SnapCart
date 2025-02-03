@@ -9,9 +9,9 @@ import {
   Button,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import UserService from "../../services/userService";
-import { setUser } from "../../store/reducers/userSlice";
+import { RootState } from "../../../store/store";
+import UserService from "../../../services/userService";
+import { setUser } from "../../../store/reducers/userSlice";
 
 const DeliveryInfo = () => {
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const DeliveryInfo = () => {
   };
 
   return (
-    <Card variant="outlined" sx={{ mb: 2 }}>
+    <Card variant="outlined" sx={{mt:5 ,mb: 2 , backgroundColor:"snow", boxShadow:"0px 0px 5px gray"}}>
       <CardContent>
         <Typography variant="h6">Delivery Information</Typography>
         <Divider sx={{ my: 2 }} />

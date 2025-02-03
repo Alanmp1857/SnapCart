@@ -12003,13 +12003,39 @@
   ],
   "cartdata": [
     {
-      "id": "6549",
-      "user": "harsha@gmail.com",
-      "productid": "3",
-      "img": "https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/thumbnail.png",
+      "id": "a172",
+      "email": "email2@gmail.com",
+      "productid": 1,
+      "title": "Essence Mascara Lash Princess",
+      "price": 9.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "d295",
+      "email": "email2@gmail.com",
+      "productid": 3,
       "title": "Powder Canister",
       "price": 14.99,
-      "discountPercentage": 18.14,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "f840",
+      "email": "email2@gmail.com",
+      "productid": 4,
+      "title": "Red Lipstick",
+      "price": 12.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Lipstick/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "c34a",
+      "email": "email2@gmail.com",
+      "productid": 5,
+      "title": "Red Nail Polish",
+      "price": 8.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Nail%20Polish/thumbnail.png",
       "quantity": 1
     }
   ],
