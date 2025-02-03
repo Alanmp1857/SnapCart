@@ -10,8 +10,12 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Rating from "@mui/material/Rating";
 import CustomButton from "./CustomButton";
 import { ItemCardProps } from "../models/ItemCard.interface";
+import CartService from "../services/CartService";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const ItemCard: React.FC<ItemCardProps> = ({
+  id,
   title,
   price,
   thumbnail,
@@ -21,6 +25,26 @@ const ItemCard: React.FC<ItemCardProps> = ({
   category,
 }) => {
   const [value, setValue] = useState<number | null>(rating || 0);
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const handleAddToCart = (e: any) => {
+    e.stopPropagation();
+    if (!user || !user.email) {
+      console.error("User not logged in");
+      return;
+    }
+    const item = {
+      email: user.email,
+      productid: id,
+      title,
+      price,
+      thumbnail,
+      quantity: 1,
+    };
+    console.log(item);
+    CartService.AddToCart(item);
+  };
+
   return (
     <Card
       sx={{
@@ -40,7 +64,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
           backgroundColor: "lightgray",
           border: "1px solid black",
         },
-      }}>
+      }}
+    >
       {/* Ensure relative positioning for absolute children */}
       <CardActionArea disableRipple>
         {/* Favorite Icon Positioned Over Image */}
@@ -54,7 +79,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
             backgroundColor: "rgba(255, 255, 255, 0.7)", // Optional: Background for visibility
             borderRadius: "50%",
             "&:hover": { backgroundColor: "transparent" },
-          }}>
+          }}
+        >
           <FavoriteIcon />
         </IconButton>
 
@@ -92,7 +118,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
               display: "flex",
               alignItems: "center",
               paddingTop: 2,
-            }}>
+            }}
+          >
             <Rating
               name="simple-controlled"
               value={value}
@@ -105,7 +132,10 @@ const ItemCard: React.FC<ItemCardProps> = ({
         </CardContent>
         {/* Share Button */}
         <CardActions sx={{ marginTop: "-10px" }}>
-          <CustomButton name="Add to Cart" />
+          <CustomButton
+            name="Add to Cart"
+            onClick={(e: any) => handleAddToCart(e)}
+          />
         </CardActions>
       </CardActionArea>
     </Card>

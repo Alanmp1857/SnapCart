@@ -1,6 +1,6 @@
 import React from "react";
-import CartItems from "./CartItems";
-import DeliveryInfo from "./DeliveryInfo";
+import CartItems from "./CartItems/CartItems";
+import DeliveryInfo from "./DeliveryInfo/DeliveryInfo";
 import OrderSummary from "./OrderSummary/OrderSummary";
 import "./Checkout.css"; // Import external CSS
 

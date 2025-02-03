@@ -25,7 +25,7 @@ const OrderSummary = () => {
   const total = subTotal + tax + discount + shippingCost;
 
   return (
-    <Card variant="outlined" className="order-summary">
+    <Card variant="outlined" className="order-summary" sx={{backgroundColor:"lightgray", boxShadow:"0px 0px 10px gray inset"}}>
       <CardContent>
         <Typography variant="h6" className="title">Order Summary</Typography>
         <Divider className="divider" />

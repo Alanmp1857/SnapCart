@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 
-const CustomButton = (props: { name: string }) => {
+const CustomButton = (props: { name: string; onClick: (e: any) => void }) => {
   return (
     <Button
       variant="outlined"
@@ -12,7 +12,9 @@ const CustomButton = (props: { name: string }) => {
         marginLeft: "5px",
         backgroundColor: "grey",
       }}
-      disableRipple>
+      disableRipple
+      onClick={(e: any) => props.onClick(e)}
+    >
       {props.name}
     </Button>
   );
