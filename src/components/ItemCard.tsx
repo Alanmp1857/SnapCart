@@ -56,7 +56,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
         boxShadow: "none",
         border: "1px solid #e0e2e4",
         display: "flex", // Horizontal layout
-        alignItems: "center",
+        flexDirection: "column",
+        // alignItems: "center",
         overflow: "hidden",
         backgroundColor: "#f5f5f5",
         "&:hover": {
@@ -138,6 +139,10 @@ const ItemCard: React.FC<ItemCardProps> = ({
           />
         </CardActions>
       </CardActionArea>
+      <CardActions sx={{ marginTop: "-10px" }}>
+        <CustomButton name="Add to Cart" />
+        <CustomButton name="Buy Now" />
+      </CardActions>
     </Card>
   );
 };

@@ -20,9 +20,12 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const response = await ProductService.getAllProducts();
-      const data = response.data.slice(0, 20);
-      setResults(data);
-    } catch (error: any) {
+      const data = response.data;
+
+      const randomData = data.sort(() => Math.random() - 0.5).slice(0, 10);
+
+      setResults(randomData);
+    } catch (error) {
       setError("Failed to fetch products, please try again later.");
       console.error("Fetch failed: ", error.response?.data || error.message);
     } finally {
