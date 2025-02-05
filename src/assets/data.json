@@ -12037,6 +12037,35 @@
       "price": 8.99,
       "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Nail%20Polish/thumbnail.png",
       "quantity": 1
+    },
+    {
+      "id": "9935",
+      "email": "email2@gmail.com",
+      "productid": "150",
+      "title": "Metal Baseball Bat",
+      "price": 29.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/sports-accessories/Metal%20Baseball%20Bat/thumbnail.png",
+      "quantity": 2
+    },
+    {
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "5",
+      "title": "Red Nail Polish",
+      "price": 8.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Nail%20Polish/thumbnail.png",
+      "quantity": 2,
+      "id": "7754"
+    },
+    {
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "13",
+      "title": "Bedside Table African Cherry",
+      "price": 299.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/furniture/Bedside%20Table%20African%20Cherry/thumbnail.png",
+      "quantity": 6,
+      "id": "74b5"
     }
   ],
   "favourites": []

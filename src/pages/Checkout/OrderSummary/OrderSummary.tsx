@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -14,20 +14,31 @@ import {
 } from "@mui/material";
 import "./OrderSummary.css"; // Import external CSS
 
-const OrderSummary = () => {
+const OrderSummary = ({ cartList }: { cartList: any[] }) => {
   const [couponCode, setCouponCode] = useState("");
+  console.log(cartList);
 
-  // Price Details
-  const subTotal = 549.0;
-  const tax = subTotal * 0.1;
-  const discount = -tax;
-  const shippingCost = 0.0;
-  const total = subTotal + tax + discount + shippingCost;
+  const [subTotal, setSubTotal] = useState(0);
+
+  useEffect(() => {
+    setSubTotal(
+      cartList.reduce((total, item) => total + item.price * item.quantity, 0)
+    );
+  }, [cartList]);
 
   return (
-    <Card variant="outlined" className="order-summary" sx={{backgroundColor:"lightgray", boxShadow:"0px 0px 10px gray inset"}}>
+    <Card
+      variant="outlined"
+      className="order-summary"
+      sx={{
+        backgroundColor: "lightgray",
+        boxShadow: "0px 0px 10px gray inset",
+      }}
+    >
       <CardContent>
-        <Typography variant="h6" className="title">Order Summary</Typography>
+        <Typography variant="h6" className="title">
+          Order Summary
+        </Typography>
         <Divider className="divider" />
 
         {/* Coupon Input */}
@@ -47,12 +58,21 @@ const OrderSummary = () => {
         />
 
         {/* Payment Details */}
-        <Typography variant="subtitle1" className="section-title">Payment Details</Typography>
+        <Typography variant="subtitle1" className="section-title">
+          Payment Details
+        </Typography>
         <RadioGroup defaultValue="creditCard" className="radio-group">
-          <FormControlLabel value="cod" control={<Radio />} label="Cash on Delivery" />
-          <FormControlLabel value="shopcard" control={<Radio />} label="Shopcart Card" />
-          <FormControlLabel value="paypal" control={<Radio />} label="Paypal" />
-          <FormControlLabel value="creditCard" control={<Radio />} label="Credit or Debit Card" />
+          <FormControlLabel
+            value="cod"
+            control={<Radio />}
+            label="Cash on Delivery"
+          />
+          <FormControlLabel
+            value="creditCard"
+            control={<Radio />}
+            label="Credit or Debit Card"
+          />
+          <FormControlLabel value="wallet" control={<Radio />} label="Wallet" />
         </RadioGroup>
 
         {/* Payment Inputs */}
@@ -76,23 +96,43 @@ const OrderSummary = () => {
 
         {/* Price Details */}
         <Box className="price-details">
-          <Typography variant="body2">Sub Total <span>${subTotal.toFixed(2)}</span></Typography>
-          <Typography variant="body2">Tax (10%) <span>${tax.toFixed(2)}</span></Typography>
-          <Typography variant="body2">Coupon Discount <span>${discount.toFixed(2)}</span></Typography>
-          <Typography variant="body2">Shipping Cost <span>${shippingCost.toFixed(2)}</span></Typography>
+          <Typography variant="body2" sx={{ fontSize: "1.1rem" }}>
+            Sub Total <span>${subTotal.toFixed(2)}</span>
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: "1.1rem" }}>
+            Tax (10%) <span>${(subTotal * 0.1).toFixed(2)}</span>
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: "1.1rem" }}>
+            Coupon Discount <span>${(40.0).toFixed(2)}</span>
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: "1.1rem" }}>
+            Shipping Cost <span>${(60.0).toFixed(2)}</span>
+          </Typography>
           <Divider className="divider" />
-          <Typography variant="h6" className="total">Total <span>= ${total.toFixed(2)}</span></Typography>
+          <Typography variant="h6" className="total" sx={{ my: "10px" }}>
+            Total
+            <span>
+              = ${(subTotal + subTotal * 0.1 - 40.0 + 60.0).toFixed(2)}
+            </span>
+          </Typography>
         </Box>
 
         {/* Pay Button */}
-        <Button variant="contained" fullWidth className="pay-button">
-          Pay ${total.toFixed(2)}
+        <Button
+          variant="contained"
+          fullWidth
+          className="pay-button"
+          sx={{ bgcolor: "green", borderRadius: "30px", padding: "10px", my: "10px" }}
+        >
+          Pay ${(subTotal + subTotal * 0.1 - 40.0 + 60.0).toFixed(2)}
         </Button>
 
         {/* Shopcart Cashback Banner */}
         <Box className="cashback-banner">
           <Typography variant="body2">Earn 5% cash back on Shopcart</Typography>
-          <Button variant="text" size="small">Learn More</Button>
+          <Button variant="text" size="small">
+            Learn More
+          </Button>
         </Box>
       </CardContent>
     </Card>

@@ -43,12 +43,12 @@
   
   .pay-button {
     margin-top: 16px;
-    background-color: #004d40;
+    background-color: #19ceb0;
     color: white;
   }
   
   .pay-button:hover {
-    background-color: #00332b;
+    background-color: #5ad2ce;
   }
   
   .cashback-banner {

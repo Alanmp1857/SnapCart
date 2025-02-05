@@ -34,6 +34,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       return;
     }
     const item = {
+      userId:user.id,
       email: user.email,
       productid: id,
       title,
