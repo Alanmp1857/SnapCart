@@ -51,13 +51,14 @@ const ItemCard: React.FC<ItemCardProps> = ({
       sx={{
         maxWidth: 280,
         maxHeight: 400,
-        height: "100%",
+        height: "380px",
         width: "300px",
         position: "relative",
         boxShadow: "none",
         border: "1px solid #e0e2e4",
         display: "flex", // Horizontal layout
         flexDirection: "column",
+        justifyContent: "space-evenly",
         // alignItems: "center",
         overflow: "hidden",
         backgroundColor: "#f5f5f5",

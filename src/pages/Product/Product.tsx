@@ -13,6 +13,7 @@ import React, { useEffect } from "react";
 import { ProductProps } from "../../models/Product.interface";
 import { useParams } from "react-router";
 import ProductService from "../../services/productService";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Product = () => {
   const { backgroundColor } = useSelector((state: RootState) => state.theme);
@@ -111,8 +112,10 @@ const Product = () => {
             </Box>
 
             <Box>
-              <CustomButton name={"Buy Now"}></CustomButton>
-              <CustomButton name={"Add to Cart"}></CustomButton>
+              <CustomButton name={"Buy Now"} onClick={() => {}}></CustomButton>
+              <CustomButton
+                name={"Add to Cart"}
+                onClick={() => {}}></CustomButton>
             </Box>
 
             <Box border={"1px solid #e5e5e5"}>
@@ -140,14 +143,22 @@ const Product = () => {
         </Box>
       </Box>
       <Box>
-        <Typography>Customer Reviews</Typography>
+        <Typography variant="h5">Customer Reviews</Typography>
         <Box>
-          {productDetails?.reviews.map((review, index) => (
+          {productDetails?.reviews.map((review) => (
             <Box>
-              <Typography>{review.reviewerName}</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}>
+                <AccountCircleIcon />
+                <Typography>{review.reviewerName}</Typography>
+                <Typography>{review.rating}</Typography>
+                <RatingBar rating={review.rating} />
+              </Box>
               <Typography>{review.comment}</Typography>
-              <RatingBar rating={review.rating} />
-              <Typography>{review.rating}</Typography>
+              <Typography>{review.date}</Typography>
             </Box>
           ))}
         </Box>

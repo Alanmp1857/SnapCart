@@ -2,27 +2,23 @@
   "userdata": [
     {
       "username": "harsha k",
-      "address": "baner",
-      "city": "pune",
-      "zipCode": "498289",
-      "mobile": "2929290290",
-      "email": "email@gmail.com",
-      "id": "c60a"
-    },
-    {
-      "username": "harsha k",
       "email": "email2@gmail.com",
       "password": "password",
       "id": "9935"
     },
     {
-      "username": "alan alan",
-      "email": "alan@alan.alan",
-      "address": "kerala",
-      "city": "thiruvananthapuram",
-      "zipCode": "3838383",
-      "mobile": "39838938938",
-      "id": "54fb"
+      "id": "9a42",
+      "username": "Alan Panicker",
+      "email": "alan@gmail.com",
+      "address": [
+        {
+          "city": "nashik",
+          "state": "kerala",
+          "zipCode": "2423423",
+          "mobile": "354533542"
+        }
+      ],
+      "password": "alan123"
     }
   ],
   "categories": [
