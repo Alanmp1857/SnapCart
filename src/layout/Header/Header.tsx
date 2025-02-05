@@ -19,6 +19,7 @@ import SearchBar from "../../components/SearchBar";
 import { setUser } from "../../store/reducers/userSlice";
 import SearchResultList from "../../components/SearchResultList";
 import { useNavigate } from "react-router";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -142,7 +143,7 @@ function Header() {
               <Button
                 onClick={() => navigate("/category")}
                 sx={{ my: 2, color: "inherit", display: "block" }}>
-                Catgories
+                Categories
               </Button>
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -164,7 +165,8 @@ function Header() {
                 />
               )}
             </Box>
-            <Box sx={{ flexGrow: 0 }}>
+            <Box sx={{ display:"inline-flex" ,justifyContent:"center",alignItems:"center",flexGrow: 0 }}>
+              <ShoppingCartIcon fontSize="large" sx={{mr:2, cursor:"pointer"}} onClick={() => navigate("/cart")}/>
               {user.username ? (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Tooltip title="You">

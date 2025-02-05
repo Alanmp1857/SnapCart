@@ -11,6 +11,17 @@ const GetAllCartItems = async (): Promise<CartItem[]> => {
     }
 };
 
+const GetCartItemsByUser = async (userId:string): Promise<CartItem[]> => {
+    try {
+        const response = await axios.get("http://localhost:4000/cartdata");
+        console.log(response.data);
+        return response.data.filter((item:CartItem) => item.userId === userId); // Assuming the response data is an array of CartItem
+    } catch (error) {
+        console.error('Error fetching cart items:', error);
+        throw error; // Re-throw the error to be handled by the caller
+    }
+};
+
 const AddToCart = async (item: any) => {
     try {
         const exists = await IsExisting(item);
@@ -69,6 +80,7 @@ const IsExisting = async (item: any): Promise<CartId> => {
 
 const CartService = {
     GetAllCartItems,
+    GetCartItemsByUser,
     AddToCart,
     DeleteCartItem,
     updateCart

@@ -1,27 +1,7 @@
 import { Card, CardContent, Typography, Divider } from "@mui/material";
 import CartItem from "../../../components/CartItem";
-import CartService from "../../../services/CartService";
-import { useEffect, useState } from "react";
 
-const CartItems = () => {
-  const [cartList, setCartList] = useState<any[]>([]);
-
-  const getAllCartItems = async () => {
-    try {
-      const cartItems = await CartService.GetAllCartItems();
-      console.log(cartItems)
-      setCartList(cartItems);
-    } catch (error: any) {
-      console.error(error.response?.data || error.message);
-      setCartList([]); // Ensure state remains an empty array on failure
-    }
-  };
-  
-
-  useEffect(() => {
-    getAllCartItems();
-  }, []);
-
+const CartItems = ({ cartList }: { cartList: any[]}) => {
   return (
     <Card
       variant="outlined"

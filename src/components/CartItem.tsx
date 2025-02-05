@@ -1,14 +1,36 @@
 import { Grid, Typography, Button } from "@mui/material";
 import { useState } from "react";
 import { CartItem as CartItemType } from "../models/CartItem.interface";
+import { useSelector } from "react-redux";
+import CartService from "../services/CartService";
+import { RootState } from "../store/store";
 
 interface CartItemProps {
   item: CartItemType;
 }
 
-const CartItem:React.FC<CartItemProps> = ({item}) => {
-    console.log(item)
+const CartItem: React.FC<CartItemProps> = ({ item }) => {
   const [quantity, setQuantity] = useState(1);
+  const {user} = useSelector((state: RootState) => state.user);
+
+  const handleAddToCart = (e: any) => {
+    e.stopPropagation();
+    if (!user || !user.email) {
+      console.error("User not logged in");
+      return;
+    }
+    const item = {
+      // userId: user.id,
+      // email: user.email,
+      // productid: id,
+      // title,
+      // price,
+      // thumbnail,
+      // quantity: 1,
+    };
+    console.log(item);
+    CartService.AddToCart(item);
+  };
 
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => {
