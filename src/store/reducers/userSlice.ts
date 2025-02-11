@@ -17,6 +17,7 @@ const userSlice = createSlice({
         },
       ],
       password: "",
+      wallet:0,
     },
   },
   reducers: {

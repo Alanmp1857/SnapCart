@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import AdbIcon from "@mui/icons-material/Adb";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Authentication from "../../pages/Authentication/Authentication";
 import { RootState } from "../../store/store";
 import { toggleTheme } from "../../store/reducers/themeSlice";
@@ -19,13 +19,15 @@ import SearchBar from "../../components/SearchBar";
 import { setUser } from "../../store/reducers/userSlice";
 import SearchResultList from "../../components/SearchResultList";
 import { useNavigate } from "react-router";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CartService from "../../services/CartService";
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [auth, setAuth] = useState("login");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [cartItemsCount, setCartItemsCount] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,6 +35,22 @@ function Header() {
     (state: RootState) => state.theme
   );
   const { user } = useSelector((state: RootState) => state.user);
+  const { cartClickCount } = useSelector((state: RootState) => state.cartCount);
+
+  const getCartItemsCount = async () => {
+    try {
+      const response = await CartService.GetAllCartItems();
+      setCartItemsCount(
+        response.data.filter((item: any) => item.userId === user.id).length
+      );
+      console.log(
+        response.data.filter((item: any) => item.userId === user.id).length,
+        response.data.filter((item: any) => item.userId === user.id)
+      );
+    } catch (error) {
+      console.error("Error fetching cart items Count:", error);
+    }
+  };
 
   const handleThemeToggle = () => {
     dispatch(toggleTheme());
@@ -54,6 +72,10 @@ function Header() {
     setOpen(false);
   };
 
+  useEffect(() => {
+    getCartItemsCount();
+  }, [cartClickCount]);
+
   return (
     <>
       <AppBar
@@ -61,7 +83,8 @@ function Header() {
         sx={{
           backgroundColor: theme === "light" ? "#2D2638" : "#E3DDFF",
           color: backgroundColor,
-        }}>
+        }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -78,7 +101,8 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}>
+              }}
+            >
               SnapCart
             </Typography>
 
@@ -89,7 +113,8 @@ function Header() {
                 aria-controls="menu-appbar"
                 aria-hasAuthentication="true"
                 onClick={handleOpenNavMenu}
-                color="inherit">
+                color="inherit"
+              >
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -106,7 +131,8 @@ function Header() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}>
+                sx={{ display: { xs: "block", md: "none" } }}
+              >
                 {/* pending for optimization */}
                 {/* {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -131,18 +157,21 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}>
+              }}
+            >
               SnapCart
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 onClick={handleThemeToggle}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
+                sx={{ my: 2, color: "inherit", display: "block" }}
+              >
                 {theme}
               </Button>
               <Button
                 onClick={() => navigate("/category")}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
+                sx={{ my: 2, color: "inherit", display: "block" }}
+              >
                 Categories
               </Button>
             </Box>
@@ -157,7 +186,8 @@ function Header() {
                 right: 0,
                 left: 850,
                 width: "80%",
-              }}>
+              }}
+            >
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}
@@ -165,8 +195,44 @@ function Header() {
                 />
               )}
             </Box>
-            <Box sx={{ display:"inline-flex" ,justifyContent:"center",alignItems:"center",flexGrow: 0 }}>
-              <ShoppingCartIcon fontSize="large" sx={{mr:2, cursor:"pointer"}} onClick={() => navigate("/cart")}/>
+            <Box
+              sx={{
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexGrow: 0,
+              }}
+            >
+              <Box
+                sx={{
+                  position: "relative",
+                  display: "inline-block",
+                  mr: 2,
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate("/cart")}
+              >
+                <ShoppingCartIcon fontSize="large" />
+                {cartItemsCount > 0 && (
+                  <Button
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      transform: "translate(40%, -40%)",
+                      borderRadius: "50%",
+                      border: "1px solid white",
+                      backgroundColor: "red",
+                      color: "white",
+                      minWidth: "20px",
+                      height: "20px",
+                    }}
+                  >
+                    {cartItemsCount}
+                  </Button>
+                )}
+              </Box>
+
               {user.username ? (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Tooltip title="You">
@@ -185,22 +251,21 @@ function Header() {
                           id: "",
                           username: "",
                           email: "",
-                          address: "",
-                          city: "",
-                          zipCode: "",
-                          mobile: "",
+                          address: [],
                           password: "",
                         })
                       )
                     }
-                    sx={{ my: 2, color: "inherit", display: "block" }}>
+                    sx={{ my: 2, color: "inherit", display: "block" }}
+                  >
                     Logout
                   </Button>
                 </Box>
               ) : (
                 <Button
                   onClick={() => setOpen(true)}
-                  sx={{ my: 2, color: "inherit", display: "block" }}>
+                  sx={{ my: 2, color: "inherit", display: "block" }}
+                >
                   Login
                 </Button>
               )}

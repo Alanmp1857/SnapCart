@@ -11,4 +11,5 @@ export interface UserProps {
   address: AddressProps[];
   email: string;
   password: string;
+  wallet: number;
 }

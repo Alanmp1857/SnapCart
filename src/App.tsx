@@ -7,6 +7,7 @@ import Product from "./pages/Product/Product";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 // import ProductList from "./pages/ProductList/ProductList";
 import CategoryProducts from "./pages/CategoryProducts/CategoryProducts";
+import Wallet from "./pages/Wallet/Wallet";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/category" element={<Category />}></Route>
           <Route path="/category/:slug" element={<CategoryProducts />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/wallet" element={<Wallet />}></Route>
         </Routes>
       </Router>
     </>

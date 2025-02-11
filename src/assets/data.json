@@ -4,6 +4,7 @@
       "username": "harsha k",
       "email": "email2@gmail.com",
       "password": "password",
+      "wallet":0,
       "id": "9935"
     },
     {
@@ -11999,69 +12000,54 @@
   ],
   "cartdata": [
     {
-      "id": "a172",
-      "email": "email2@gmail.com",
-      "productid": 1,
-      "title": "Essence Mascara Lash Princess",
-      "price": 9.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
-      "quantity": 1
-    },
-    {
-      "id": "d295",
-      "email": "email2@gmail.com",
-      "productid": 3,
-      "title": "Powder Canister",
-      "price": 14.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/thumbnail.png",
-      "quantity": 1
-    },
-    {
-      "id": "f840",
-      "email": "email2@gmail.com",
-      "productid": 4,
-      "title": "Red Lipstick",
-      "price": 12.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Lipstick/thumbnail.png",
-      "quantity": 1
-    },
-    {
-      "id": "c34a",
-      "email": "email2@gmail.com",
-      "productid": 5,
-      "title": "Red Nail Polish",
-      "price": 8.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Nail%20Polish/thumbnail.png",
-      "quantity": 1
-    },
-    {
-      "id": "9935",
-      "email": "email2@gmail.com",
-      "productid": "150",
-      "title": "Metal Baseball Bat",
-      "price": 29.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/sports-accessories/Metal%20Baseball%20Bat/thumbnail.png",
-      "quantity": 2
-    },
-    {
       "userId": "9935",
       "email": "email2@gmail.com",
-      "productid": "5",
-      "title": "Red Nail Polish",
-      "price": 8.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Nail%20Polish/thumbnail.png",
+      "productid": "166",
+      "title": "Tartan Dress",
+      "price": 39.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/tops/Tartan%20Dress/thumbnail.png",
       "quantity": 2,
-      "id": "7754"
+      "id": "5a29"
     },
     {
+      "id": "5d5c",
       "userId": "9935",
       "email": "email2@gmail.com",
-      "productid": "13",
-      "title": "Bedside Table African Cherry",
-      "price": 299.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/furniture/Bedside%20Table%20African%20Cherry/thumbnail.png",
-      "quantity": 6,
-      "id": "74b5"
+      "productid": "163",
+      "title": "Girl Summer Dress",
+      "price": 19.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/tops/Girl%20Summer%20Dress/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "8dec",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "192",
+      "title": "Rolex Datejust Women",
+      "price": 10999.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/womens-watches/Rolex%20Datejust%20Women/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "91f0",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "184",
+      "title": "Tropical Earring",
+      "price": 19.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/womens-jewellery/Tropical%20Earring/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "0651",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "159",
+      "title": "iPad Mini 2021 Starlight",
+      "price": 499.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/tablets/iPad%20Mini%202021%20Starlight/thumbnail.png",
+      "quantity": 1
     }
   ],
   "favourites": []

@@ -11,8 +11,9 @@ import Rating from "@mui/material/Rating";
 import CustomButton from "./CustomButton";
 import { ItemCardProps } from "../models/ItemCard.interface";
 import CartService from "../services/CartService";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { cartClick } from "../store/reducers/cartCountSlice";
 
 const ItemCard: React.FC<ItemCardProps> = ({
   id,
@@ -24,17 +25,19 @@ const ItemCard: React.FC<ItemCardProps> = ({
   reviews,
   category,
 }) => {
+  const dispatch = useDispatch();
+
   const [value, setValue] = useState<number | null>(rating || 0);
   const { user } = useSelector((state: RootState) => state.user);
 
-  const handleAddToCart = (e: any) => {
+  const handleAddToCart = async(e: any) => {
     e.stopPropagation();
     if (!user || !user.email) {
       console.error("User not logged in");
       return;
     }
     const item = {
-      userId:user.id,
+      userId: user.id,
       email: user.email,
       productid: id,
       title,
@@ -43,7 +46,12 @@ const ItemCard: React.FC<ItemCardProps> = ({
       quantity: 1,
     };
     console.log(item);
-    CartService.AddToCart(item);
+    try {
+      await CartService.AddToCart(item);
+      dispatch(cartClick());
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -67,7 +75,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
           backgroundColor: "lightgray",
           border: "1px solid black",
         },
-      }}>
+      }}
+    >
       {/* Ensure relative positioning for absolute children */}
       <CardActionArea disableRipple>
         {/* Favorite Icon Positioned Over Image */}
@@ -81,7 +90,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
             backgroundColor: "rgba(255, 255, 255, 0.7)", // Optional: Background for visibility
             borderRadius: "50%",
             "&:hover": { backgroundColor: "transparent" },
-          }}>
+          }}
+        >
           <FavoriteIcon />
         </IconButton>
 
@@ -119,7 +129,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
               display: "flex",
               alignItems: "center",
               paddingTop: 2,
-            }}>
+            }}
+          >
             <Rating
               name="simple-controlled"
               value={value}
