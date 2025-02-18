@@ -43,6 +43,7 @@ const Authentication: React.FC<Props> = ({ open, onClose, auth, setAuth }) => {
       username: values.firstName + " " + values.lastName,
       email: values.email,
       password: values.password,
+      wallet: 0,
     })
       .then((res) => {
         // Assuming a successful response has a status code of 200

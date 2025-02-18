@@ -1,7 +1,23 @@
-import { Card, CardContent, Typography, Divider } from "@mui/material";
+import { Card, CardContent, Typography, Divider, Button } from "@mui/material";
 import CartItem from "../../../components/CartItem";
+import CartService from "../../../services/CartService";
 
-const CartItems = ({ cartList }: { cartList: any[]}) => {
+const CartItems = ({
+  cartList,
+  refreshData,
+}: {
+  cartList: any[];
+  refreshData: () => void;
+}) => {
+  const handleDeleteCartItems =async  () => {
+    try {
+      await cartList.map((item: any) => CartService.DeleteCartItem(item.id));
+      refreshData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Card
       variant="outlined"
@@ -16,9 +32,23 @@ const CartItems = ({ cartList }: { cartList: any[]}) => {
         <Typography variant="h6">Review Item And Shipping</Typography>
         <Divider sx={{ my: 2 }} />
         {cartList.map((item) => (
-          <CartItem key={item.id} item={item} />
+          <CartItem key={item.id} item={item} refreshData={refreshData} />
         ))}
       </CardContent>
+      <Button
+        sx={{
+          mt: 2,
+          backgroundColor: "red",
+          color: "white",
+          padding: "5px 20px",
+          borderRadius: "5px",
+        }}
+        onClick={() => {
+          handleDeleteCartItems();
+        }}
+      >
+        Remove all Items
+      </Button>
     </Card>
   );
 };

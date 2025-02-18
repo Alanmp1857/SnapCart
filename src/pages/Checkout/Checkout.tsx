@@ -3,37 +3,46 @@ import CartItems from "./CartItems/CartItems";
 import DeliveryInfo from "./DeliveryInfo/DeliveryInfo";
 import OrderSummary from "./OrderSummary/OrderSummary";
 import "./Checkout.css"; // Import external CSS
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { Box, Button, Typography } from "@mui/material";
 import CartService from "../../services/CartService";
+import EmptyCart from "./EmptyCart/EmptyCart";
+import { cartClick } from "../../store/reducers/cartCountSlice";
 
 const Checkout: React.FC = () => {
   const [cartList, setCartList] = useState<any[]>([]);
+  const dispatch = useDispatch();
+
   const { user } = useSelector((state: RootState) => state.user);
+  const { cartClickCount } = useSelector((state: RootState) => state.cartCount);
 
   const getAllCartItems = async (userId: string) => {
     try {
-      const cartItems = await CartService.GetCartItemsByUser(userId);
-      console.log(cartItems);
-      setCartList(cartItems);
+      const cartItems = await CartService.GetAllCartItems();
+      console.log(cartItems.data, " hHi", userId);
+      setCartList(cartItems.data.filter((item: any) => item.userId === userId));
     } catch (error: any) {
       console.error(error.response?.data || error.message);
       setCartList([]); // Ensure state remains an empty array on failure
     }
   };
 
+  const RefreshData = () => {
+    getAllCartItems(user.id);
+    dispatch(cartClick());
+  };
+
   useEffect(() => {
     user.id && getAllCartItems(user.id);
-  }, []);
+  }, [user, cartClickCount]);
 
   return (
     <div className="checkout-container">
-      {user.email ? (
+      {user.email && cartList.length > 0 ? (
         <>
           {/* Left Section - Cart and Delivery Info */}
           <div className="checkout-left">
-            <CartItems cartList={cartList} />
+            <CartItems cartList={cartList} refreshData={RefreshData} />
             <DeliveryInfo />
           </div>
 
@@ -43,51 +52,7 @@ const Checkout: React.FC = () => {
           </div>
         </>
       ) : (
-        <>
-          <Box
-            sx={{
-              height: "80%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ fontSize: "30px", fontWeight: "bold", color: "black" }}
-            >
-              Your Cart is Empty
-            </Typography>
-            <img
-              src="https://imgs.search.brave.com/PQjRtu5e0vNMbWkufqsBX-L3ESfk5tSuTZkTt9T0bMk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzczLzE1Lzkx/LzM2MF9GXzczMTU5/MTY2X3ViN0hEVVdl/UDRMM250Wk5NWk9F/QmtSOG5maU1vMTRa/LmpwZw"
-              alt=""
-              width="50%"
-              style={{ margin: "20px 0px" }}
-            />
-            <Box sx={{ display: "inline-flex" }}>
-              <Button
-                sx={{
-                  backgroundColor: "yellow",
-                  color: "black",
-                  boxShadow: "0px 0px 3px gray",
-                  borderRadius: "25px",
-                }}
-              >
-                Sign in to your Account
-              </Button>
-              <Button
-                sx={{
-                  ml: "15px",
-                  backgroundColor: "white",
-                  color: "black",
-                  boxShadow: "0px 0px 3px gray",
-                  borderRadius: "25px",
-                }}
-              >
-                SignUp
-              </Button>
-            </Box>
-          </Box>
-        </>
+        <EmptyCart isLoggedin={user.email ? true : false} />
       )}
     </div>
   );

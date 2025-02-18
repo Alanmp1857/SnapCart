@@ -1,40 +1,42 @@
 import { Grid, Typography, Button } from "@mui/material";
-import { useState } from "react";
 import { CartItem as CartItemType } from "../models/CartItem.interface";
-import { useSelector } from "react-redux";
 import CartService from "../services/CartService";
-import { RootState } from "../store/store";
+import { useState } from "react";
 
 interface CartItemProps {
   item: CartItemType;
+  refreshData: () => void;
 }
 
-const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  const [quantity, setQuantity] = useState(1);
-  const {user} = useSelector((state: RootState) => state.user);
+const CartItem: React.FC<CartItemProps> = ({ item, refreshData }) => {
+  const [values, setValues] = useState(item);
 
-  const handleAddToCart = (e: any) => {
-    e.stopPropagation();
-    if (!user || !user.email) {
-      console.error("User not logged in");
-      return;
+  const updateCart = (item: any, quantity: number) => {
+    setValues((prev) => ({
+      ...prev,
+      quantity: quantity,
+    }));
+    console.log(values);
+    try {
+      CartService.updateCart(item, quantity, item.id);
+    } catch (error) {
+      console.log(error);
     }
-    const item = {
-      // userId: user.id,
-      // email: user.email,
-      // productid: id,
-      // title,
-      // price,
-      // thumbnail,
-      // quantity: 1,
-    };
-    console.log(item);
-    CartService.AddToCart(item);
   };
 
-  const handleIncrease = () => setQuantity(quantity + 1);
+  const handleIncrease = () => updateCart(item, values.quantity + 1);
   const handleDecrease = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
+    if (values.quantity > 1) {
+      updateCart(item, values.quantity - 1);
+    } else {
+      console.log("Deleted");
+      try {
+        CartService.DeleteCartItem(values.id);
+        refreshData();
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -53,24 +55,24 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
     >
       <Grid item xs={2}>
         <img
-          src={item.thumbnail} // Replace with the product image URL
+          src={values.thumbnail} // Replace with the product image URL
           alt="Airpods Max"
           style={{ width: "100%", borderRadius: 8 }}
         />
       </Grid>
       <Grid item xs={6}>
-        <Typography variant="subtitle1">{item.title}</Typography>
+        <Typography variant="subtitle1">{values.title}</Typography>
         <Typography variant="body2" color="textSecondary">
           Color: Pink
         </Typography>
       </Grid>
       <Grid item xs={3}>
-        <Typography variant="h6">${item.price}</Typography>
+        <Typography variant="h6">${values.price}</Typography>
         <Grid container alignItems="center" spacing={1} mt={1}>
           <Button variant="outlined" size="small" onClick={handleDecrease}>
             -
           </Button>
-          <Typography mx={2}>{item.quantity}</Typography>
+          <Typography mx={2}>{values.quantity}</Typography>
           <Button variant="outlined" size="small" onClick={handleIncrease}>
             +
           </Button>

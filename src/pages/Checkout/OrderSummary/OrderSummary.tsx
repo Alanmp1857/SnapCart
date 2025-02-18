@@ -11,14 +11,33 @@ import {
   Radio,
   Grid,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
 } from "@mui/material";
 import "./OrderSummary.css"; // Import external CSS
+import { useNavigate } from "react-router";
 
 const OrderSummary = ({ cartList }: { cartList: any[] }) => {
   const [couponCode, setCouponCode] = useState("");
+  const [subTotal, setSubTotal] = useState(0);
+  const [open, setOpen] = useState(false);
+  const navigate=useNavigate();
   console.log(cartList);
 
-  const [subTotal, setSubTotal] = useState(0);
+  const handleApplyCoupon = () => {
+    // Handle coupon code application logic here
+  };
+
+  const handlePayment = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     setSubTotal(
@@ -50,7 +69,11 @@ const OrderSummary = ({ cartList }: { cartList: any[] }) => {
           className="coupon-input"
           InputProps={{
             endAdornment: (
-              <Button variant="contained" size="small">
+              <Button
+                variant="contained"
+                size="small"
+                onClick={handleApplyCoupon}
+              >
                 Apply
               </Button>
             ),
@@ -122,7 +145,13 @@ const OrderSummary = ({ cartList }: { cartList: any[] }) => {
           variant="contained"
           fullWidth
           className="pay-button"
-          sx={{ bgcolor: "green", borderRadius: "30px", padding: "10px", my: "10px" }}
+          sx={{
+            bgcolor: "green",
+            borderRadius: "30px",
+            padding: "10px",
+            my: "10px",
+          }}
+          onClick={handlePayment}
         >
           Pay ${(subTotal + subTotal * 0.1 - 40.0 + 60.0).toFixed(2)}
         </Button>
@@ -135,6 +164,21 @@ const OrderSummary = ({ cartList }: { cartList: any[] }) => {
           </Button>
         </Box>
       </CardContent>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogTitle>Payment Successful</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Your order has been placed successfully!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit" onClick={()=>navigate("/")}>Continue Shopping</Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };
