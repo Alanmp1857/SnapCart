@@ -1,11 +1,19 @@
 {
   "userdata": [
     {
+      "id": "9935",
       "username": "harsha k",
       "email": "email2@gmail.com",
+      "address": [
+        {
+          "city": "",
+          "zipCode": "",
+          "mobile": "",
+          "state": ""
+        }
+      ],
       "password": "password",
-      "wallet":0,
-      "id": "9935"
+      "wallet": 11000
     },
     {
       "id": "9a42",
