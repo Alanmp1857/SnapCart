@@ -20,7 +20,10 @@ import { setUser } from "../../store/reducers/userSlice";
 import SearchResultList from "../../components/SearchResultList";
 import { useNavigate } from "react-router";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+<<<<<<< Updated upstream
 import CartService from "../../services/CartService";
+=======
+>>>>>>> Stashed changes
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -174,6 +177,11 @@ function Header() {
               >
                 Categories
               </Button>
+              <Button
+                onClick={() => navigate("/favorites")}
+                sx={{ my: 2, color: "inherit", display: "block" }}>
+                Favourites
+              </Button>
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <SearchBar onSearch={setSearchQuery} />
@@ -201,6 +209,7 @@ function Header() {
                 justifyContent: "center",
                 alignItems: "center",
                 flexGrow: 0,
+<<<<<<< Updated upstream
               }}
             >
               <Box
@@ -233,6 +242,14 @@ function Header() {
                 )}
               </Box>
 
+=======
+              }}>
+              <ShoppingCartIcon
+                fontSize="large"
+                sx={{ mr: 2, cursor: "pointer" }}
+                onClick={() => navigate("/cart")}
+              />
+>>>>>>> Stashed changes
               {user.username ? (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Tooltip title="You">

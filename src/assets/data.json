@@ -21,13 +21,16 @@
       "email": "alan@gmail.com",
       "address": [
         {
-          "city": "nashik",
+          "city": "kochi",
           "state": "kerala",
           "zipCode": "2423423",
           "mobile": "354533542"
         }
       ],
-      "password": "alan123"
+      "password": "alan123",
+      "favourites": [
+        7
+      ]
     }
   ],
   "categories": [

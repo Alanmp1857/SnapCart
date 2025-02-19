@@ -17,20 +17,48 @@ const userSlice = createSlice({
         },
       ],
       password: "",
-      wallet:0,
+      wallet: 0,
+      favourites: [],
     },
   },
   reducers: {
     setUser: (state, action: PayloadAction<Partial<UserProps>>) => {
-      state.user = { ...state.user, ...action.payload }; // Merge updates instead of replacing
+      state.user = { ...state.user, ...action.payload };
     },
 
     updateAddress: (state, action: PayloadAction<AddressProps>) => {
-      // Assuming we're updating the first address, you can handle it based on the index if needed
       state.user.address[0] = { ...state.user.address[0], ...action.payload };
+    },
+
+    addFavourite: (state, action: PayloadAction<string>) => {
+      if (!state.user.favourites.includes(action.payload)) {
+        state.user.favourites.push(action.payload);
+      }
+    },
+
+    removeFavourite: (state, action: PayloadAction<string>) => {
+      state.user.favourites = state.user.favourites.filter(
+        (item) => item !== action.payload
+      );
+    },
+
+    toggleFavourite: (state, action: PayloadAction<string>) => {
+      if (state.user.favourites.includes(action.payload)) {
+        state.user.favourites = state.user.favourites.filter(
+          (item) => item !== action.payload
+        );
+      } else {
+        state.user.favourites.push(action.payload);
+      }
     },
   },
 });
 
-export const { setUser, updateAddress } = userSlice.actions;
+export const {
+  setUser,
+  updateAddress,
+  addFavourite,
+  removeFavourite,
+  toggleFavourite,
+} = userSlice.actions;
 export default userSlice.reducer;

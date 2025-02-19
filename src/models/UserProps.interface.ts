@@ -12,4 +12,5 @@ export interface UserProps {
   email: string;
   password: string;
   wallet: number;
+  favourites: string[];
 }

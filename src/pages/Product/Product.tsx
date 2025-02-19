@@ -38,11 +38,22 @@ const Product = () => {
     }
   }, [id]);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
     <Box
       sx={{
         backgroundColor: backgroundColor,
         color: backgroundColor === "#E3DDFF" ? "black" : "white",
+        paddingBottom: "20px",
+        paddingLeft: "20px",
       }}>
       <Box className="container">
         {/* Left Side */}
@@ -143,7 +154,9 @@ const Product = () => {
         </Box>
       </Box>
       <Box>
-        <Typography variant="h5">Customer Reviews</Typography>
+        <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
+          Customer Reviews
+        </Typography>
         <Box>
           {productDetails?.reviews.map((review) => (
             <Box>
@@ -153,12 +166,22 @@ const Product = () => {
                   alignItems: "center",
                 }}>
                 <AccountCircleIcon />
-                <Typography>{review.reviewerName}</Typography>
-                <Typography>{review.rating}</Typography>
-                <RatingBar rating={review.rating} />
+                <Typography sx={{ ml: 1, mr: 3, fontWeight: "bold" }}>
+                  {review.reviewerName}
+                </Typography>
+                <RatingBar
+                  rating={review.rating}
+                  reviews={productDetails?.reviews}
+                />
               </Box>
-              <Typography>{review.comment}</Typography>
-              <Typography>{review.date}</Typography>
+
+              <Typography variant="body2">
+                Reviewed on {formatDate(review.date)}
+              </Typography>
+              <Typography sx={{ mt: 1, mb: 1 }}>{review.comment}</Typography>
+              <Divider
+                sx={{ backgroundColor: "#e5e5e5", width: "50%", mb: 2 }}
+              />
             </Box>
           ))}
         </Box>

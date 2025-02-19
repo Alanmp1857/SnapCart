@@ -13,6 +13,7 @@ import { ItemCardProps } from "../models/ItemCard.interface";
 import CartService from "../services/CartService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { setUser, toggleFavourite } from "../store/reducers/userSlice";
 import { cartClick } from "../store/reducers/cartCountSlice";
 
 const ItemCard: React.FC<ItemCardProps> = ({
@@ -24,13 +25,19 @@ const ItemCard: React.FC<ItemCardProps> = ({
   brand,
   reviews,
   category,
+  onRemove,
+  isFavourite,
 }) => {
-  const dispatch = useDispatch();
-
   const [value, setValue] = useState<number | null>(rating || 0);
-  const { user } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user?.user) || {
+    favourites: [],
+  };
 
-  const handleAddToCart = async(e: any) => {
+  // Get the favourite state from Redux
+  // const isFavourite = user.favourites.includes(id);
+
+  const handleAddToCart = (e: any) => {
     e.stopPropagation();
     if (!user || !user.email) {
       console.error("User not logged in");
@@ -46,12 +53,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       quantity: 1,
     };
     console.log(item);
-    try {
-      await CartService.AddToCart(item);
-      dispatch(cartClick());
-    } catch (error) {
-      console.log(error);
-    }
+    CartService.AddToCart(item);
   };
 
   return (
@@ -64,10 +66,9 @@ const ItemCard: React.FC<ItemCardProps> = ({
         position: "relative",
         boxShadow: "none",
         border: "1px solid #e0e2e4",
-        display: "flex", // Horizontal layout
+        display: "flex",
         flexDirection: "column",
         justifyContent: "space-evenly",
-        // alignItems: "center",
         overflow: "hidden",
         backgroundColor: "#f5f5f5",
         "&:hover": {
@@ -75,27 +76,23 @@ const ItemCard: React.FC<ItemCardProps> = ({
           backgroundColor: "lightgray",
           border: "1px solid black",
         },
-      }}
-    >
+      }}>
       {/* Ensure relative positioning for absolute children */}
       <CardActionArea disableRipple>
-        {/* Favorite Icon Positioned Over Image */}
         <IconButton
           aria-label="add to favorites"
           disableRipple
           sx={{
             position: "absolute",
-            top: 10, // Adjust position
-            right: 10, // Adjust position
-            backgroundColor: "rgba(255, 255, 255, 0.7)", // Optional: Background for visibility
+            top: 10,
+            right: 10,
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
             borderRadius: "50%",
             "&:hover": { backgroundColor: "transparent" },
-          }}
-        >
+          }}>
           <FavoriteIcon />
         </IconButton>
 
-        {/* Image */}
         <CardMedia
           component="img"
           height="150"
@@ -107,19 +104,13 @@ const ItemCard: React.FC<ItemCardProps> = ({
           }}
         />
 
-        {/* Product Details */}
         <CardContent sx={{ backgroundColor: "transparent" }}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h6">
-              {title.length > 20
-                ? title.slice(0, 20) + "..."
-                : title.slice(0, 20)}{" "}
-              | {brand}
-            </Typography>
-            {/* <Typography gutterBottom variant="h6">
-              ${price}
-            </Typography> */}
-          </div>
+          <Typography variant="h6">
+            {title.length > 20
+              ? title.slice(0, 20) + "..."
+              : title.slice(0, 20)}{" "}
+            | {brand}
+          </Typography>
           <Typography variant="h6">${price}</Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
             {category}
@@ -129,8 +120,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
               display: "flex",
               alignItems: "center",
               paddingTop: 2,
-            }}
-          >
+            }}>
             <Rating
               name="simple-controlled"
               value={value}
@@ -141,11 +131,10 @@ const ItemCard: React.FC<ItemCardProps> = ({
             <p>({reviews?.length})</p>
           </div>
         </CardContent>
-        {/* Share Button */}
       </CardActionArea>
       <CardActions sx={{ marginTop: "-10px" }}>
-        <CustomButton name="Add to Cart" onClick={(e) => handleAddToCart(e)} />
-        <CustomButton name="Buy Now" onClick={(e) => handleAddToCart(e)} />
+        <CustomButton name="Add to Cart" onClick={(e) => e.stopPropagation()} />
+        <CustomButton name="Buy Now" onClick={(e) => e.stopPropagation()} />
       </CardActions>
     </Card>
   );
