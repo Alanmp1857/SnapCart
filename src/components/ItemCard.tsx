@@ -14,6 +14,7 @@ import CartService from "../services/CartService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { cartClick } from "../store/reducers/cartCountSlice";
+import { setUser, toggleFavourite } from "../store/reducers/userSlice";
 
 const ItemCard: React.FC<ItemCardProps> = ({
   id,
@@ -24,13 +25,18 @@ const ItemCard: React.FC<ItemCardProps> = ({
   brand,
   reviews,
   category,
+  onRemove,
+  isFavourite,
 }) => {
   const dispatch = useDispatch();
 
   const [value, setValue] = useState<number | null>(rating || 0);
-  const { user } = useSelector((state: RootState) => state.user);
+  // const { user } = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.user?.user) || {
+    favourites: [],
+  };
 
-  const handleAddToCart = async(e: any) => {
+  const handleAddToCart = async (e: any) => {
     e.stopPropagation();
     if (!user || !user.email) {
       console.error("User not logged in");
@@ -75,8 +81,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
           backgroundColor: "lightgray",
           border: "1px solid black",
         },
-      }}
-    >
+      }}>
       {/* Ensure relative positioning for absolute children */}
       <CardActionArea disableRipple>
         {/* Favorite Icon Positioned Over Image */}
@@ -90,8 +95,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
             backgroundColor: "rgba(255, 255, 255, 0.7)", // Optional: Background for visibility
             borderRadius: "50%",
             "&:hover": { backgroundColor: "transparent" },
-          }}
-        >
+          }}>
           <FavoriteIcon />
         </IconButton>
 
@@ -129,8 +133,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
               display: "flex",
               alignItems: "center",
               paddingTop: 2,
-            }}
-          >
+            }}>
             <Rating
               name="simple-controlled"
               value={value}

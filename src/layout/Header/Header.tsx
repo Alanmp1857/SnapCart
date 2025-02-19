@@ -83,8 +83,7 @@ function Header() {
         sx={{
           backgroundColor: theme === "light" ? "#2D2638" : "#E3DDFF",
           color: backgroundColor,
-        }}
-      >
+        }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -101,8 +100,7 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
+              }}>
               SnapCart
             </Typography>
 
@@ -113,8 +111,7 @@ function Header() {
                 aria-controls="menu-appbar"
                 aria-hasAuthentication="true"
                 onClick={handleOpenNavMenu}
-                color="inherit"
-              >
+                color="inherit">
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -131,8 +128,7 @@ function Header() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}
-              >
+                sx={{ display: { xs: "block", md: "none" } }}>
                 {/* pending for optimization */}
                 {/* {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -157,22 +153,24 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
+              }}>
               SnapCart
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 onClick={handleThemeToggle}
-                sx={{ my: 2, color: "inherit", display: "block" }}
-              >
+                sx={{ my: 2, color: "inherit", display: "block" }}>
                 {theme}
               </Button>
               <Button
                 onClick={() => navigate("/category")}
-                sx={{ my: 2, color: "inherit", display: "block" }}
-              >
+                sx={{ my: 2, color: "inherit", display: "block" }}>
                 Categories
+              </Button>
+              <Button
+                onClick={() => navigate("/favorites")}
+                sx={{ my: 2, color: "inherit", display: "block" }}>
+                Favourites
               </Button>
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -186,8 +184,7 @@ function Header() {
                 right: 0,
                 left: 850,
                 width: "80%",
-              }}
-            >
+              }}>
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}
@@ -201,8 +198,7 @@ function Header() {
                 justifyContent: "center",
                 alignItems: "center",
                 flexGrow: 0,
-              }}
-            >
+              }}>
               <Box
                 sx={{
                   position: "relative",
@@ -210,8 +206,7 @@ function Header() {
                   mr: 2,
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/cart")}
-              >
+                onClick={() => navigate("/cart")}>
                 <ShoppingCartIcon fontSize="large" />
                 {cartItemsCount > 0 && (
                   <Button
@@ -226,8 +221,7 @@ function Header() {
                       color: "white",
                       minWidth: "20px",
                       height: "20px",
-                    }}
-                  >
+                    }}>
                     {cartItemsCount}
                   </Button>
                 )}
@@ -256,16 +250,14 @@ function Header() {
                         })
                       )
                     }
-                    sx={{ my: 2, color: "inherit", display: "block" }}
-                  >
+                    sx={{ my: 2, color: "inherit", display: "block" }}>
                     Logout
                   </Button>
                 </Box>
               ) : (
                 <Button
                   onClick={() => setOpen(true)}
-                  sx={{ my: 2, color: "inherit", display: "block" }}
-                >
+                  sx={{ my: 2, color: "inherit", display: "block" }}>
                   Login
                 </Button>
               )}
