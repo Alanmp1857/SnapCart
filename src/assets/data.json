@@ -12014,7 +12014,7 @@
       "title": "Tartan Dress",
       "price": 39.99,
       "thumbnail": "https://cdn.dummyjson.com/products/images/tops/Tartan%20Dress/thumbnail.png",
-      "quantity": 2,
+      "quantity": 3,
       "id": "5a29"
     },
     {
@@ -12055,6 +12055,16 @@
       "title": "iPad Mini 2021 Starlight",
       "price": 499.99,
       "thumbnail": "https://cdn.dummyjson.com/products/images/tablets/iPad%20Mini%202021%20Starlight/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "a127",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "4",
+      "title": "Red Lipstick",
+      "price": 12.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Lipstick/thumbnail.png",
       "quantity": 1
     }
   ],
