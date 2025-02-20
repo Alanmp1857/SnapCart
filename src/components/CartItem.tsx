@@ -46,10 +46,10 @@ const CartItem: React.FC<CartItemProps> = ({ item, refreshData }) => {
       spacing={2}
       sx={{
         mt: 1,
-        backgroundColor: "greenyellow",
+        backgroundColor: "snow",
         padding: "10px",
         boxSizing: "content-box",
-        boxShadow: "0px 0px 5px green inset",
+        boxShadow: "0px 0px 5px gray inset",
         borderRadius: "5px",
       }}
     >

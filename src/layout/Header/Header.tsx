@@ -21,6 +21,11 @@ import SearchResultList from "../../components/SearchResultList";
 import { useNavigate } from "react-router";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CartService from "../../services/CartService";
+import { MenuItem } from "@mui/material";
+import React from "react";
+import Switch from "../../components/Switch";
+
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -36,6 +41,17 @@ function Header() {
   );
   const { user } = useSelector((state: RootState) => state.user);
   const { cartClickCount } = useSelector((state: RootState) => state.cartCount);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const getCartItemsCount = async () => {
     try {
@@ -81,9 +97,11 @@ function Header() {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: theme === "light" ? "#2D2638" : "#E3DDFF",
-          color: backgroundColor,
-        }}>
+          backgroundColor: theme === "light" ? "#6666FF" : "#00114D",
+          // color: backgroundColor,
+          color:"white"
+        }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -100,7 +118,8 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}>
+              }}
+            >
               SnapCart
             </Typography>
 
@@ -111,7 +130,8 @@ function Header() {
                 aria-controls="menu-appbar"
                 aria-hasAuthentication="true"
                 onClick={handleOpenNavMenu}
-                color="inherit">
+                color="inherit"
+              >
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -128,7 +148,8 @@ function Header() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}>
+                sx={{ display: { xs: "block", md: "none" } }}
+              >
                 {/* pending for optimization */}
                 {/* {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -153,23 +174,26 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}>
+              }}
+            >
               SnapCart
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              <Button
+                onClick={() => navigate("/category")}
+                sx={{ my: 2, color: "inherit", display: "block" }}
+              >
+                Categories
+              </Button>
               <Button
                 onClick={handleThemeToggle}
                 sx={{ my: 2, color: "inherit", display: "block" }}>
                 {theme}
               </Button>
               <Button
-                onClick={() => navigate("/category")}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
-                Categories
-              </Button>
-              <Button
                 onClick={() => navigate("/favorites")}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
+                sx={{ my: 2, color: "inherit", display: "block" }}
+              >
                 Favourites
               </Button>
             </Box>
@@ -184,7 +208,8 @@ function Header() {
                 right: 0,
                 left: 850,
                 width: "80%",
-              }}>
+              }}
+            >
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}
@@ -198,7 +223,8 @@ function Header() {
                 justifyContent: "center",
                 alignItems: "center",
                 flexGrow: 0,
-              }}>
+              }}
+            >
               <Box
                 sx={{
                   position: "relative",
@@ -206,7 +232,8 @@ function Header() {
                   mr: 2,
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/cart")}>
+                onClick={() => navigate("/cart")}
+              >
                 <ShoppingCartIcon fontSize="large" />
                 {cartItemsCount > 0 && (
                   <Button
@@ -221,7 +248,8 @@ function Header() {
                       color: "white",
                       minWidth: "20px",
                       height: "20px",
-                    }}>
+                    }}
+                  >
                     {cartItemsCount}
                   </Button>
                 )}
@@ -230,34 +258,90 @@ function Header() {
               {user.username ? (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Tooltip title="You">
-                    <IconButton sx={{ p: 0 }}>
+                    <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
                       <Avatar
                         alt="Remy Sharp"
                         src="/static/images/avatar/2.jpg"
                       />
                     </IconButton>
                   </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    <MenuItem
+                      onClick={handleCloseUserMenu}
+                      sx={{
+                        width: "150px",
+                      }}
+                    >
+                      Profile
+                    </MenuItem>
+                    <MenuItem
+                      sx={{
+                        width: "150px",
+                        height: "50px",
+                        borderTop: 1,
+                        borderBottom: 1,
+                        boxShadow: "0px 0px 50px lightgray inset",
+                      }}
+                    >
+                      Theme
+                      <Switch
+                        checked={theme === "dark"}
+                        onChange={handleThemeToggle}
+                      />
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        navigate("/wallet");
+                        handleCloseUserMenu();
+                      }}
+                      sx={{ width: "150px", borderBottom: 1 }}
+                    >
+                      Wallet
+                    </MenuItem>
+                    <MenuItem
+                      sx={{
+                        width: "150px",
+                        color: "inherit",
+                        display: "block",
+                      }}
+                      onClick={() => {
+                        dispatch(
+                          setUser({
+                            id: "",
+                            username: "",
+                            email: "",
+                            address: [],
+                            password: "",
+                          })
+                        );
+                        handleCloseUserMenu();
+                      }}
+                    >
+                      Logout
+                    </MenuItem>
+                  </Menu>
                   <Typography sx={{ ml: 1 }}>{user.username}</Typography>
-                  <Button
-                    onClick={() =>
-                      dispatch(
-                        setUser({
-                          id: "",
-                          username: "",
-                          email: "",
-                          address: [],
-                          password: "",
-                        })
-                      )
-                    }
-                    sx={{ my: 2, color: "inherit", display: "block" }}>
-                    Logout
-                  </Button>
                 </Box>
               ) : (
                 <Button
                   onClick={() => setOpen(true)}
-                  sx={{ my: 2, color: "inherit", display: "block" }}>
+                  sx={{ my: 2, color: "inherit", display: "block" }}
+                >
                   Login
                 </Button>
               )}
