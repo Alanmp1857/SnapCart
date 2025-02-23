@@ -13,4 +13,5 @@ export interface ItemCardProps {
   category?: string;
   onRemove?: () => void;
   isFavourite?: boolean;
+  isFavouriteInUser?: boolean;
 }

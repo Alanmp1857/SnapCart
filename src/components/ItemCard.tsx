@@ -14,7 +14,8 @@ import CartService from "../services/CartService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { cartClick } from "../store/reducers/cartCountSlice";
-import { setUser, toggleFavourite } from "../store/reducers/userSlice";
+import { toggleFavourite } from "../store/reducers/userSlice";
+import axios from "axios";
 
 const ItemCard: React.FC<ItemCardProps> = ({
   id,
@@ -25,18 +26,22 @@ const ItemCard: React.FC<ItemCardProps> = ({
   brand,
   reviews,
   category,
-  onRemove,
-  isFavourite,
 }) => {
-  const dispatch = useDispatch();
-
-  const [value, setValue] = useState<number | null>(rating || 0);
   // const { user } = useSelector((state: RootState) => state.user);
   const user = useSelector((state: RootState) => state.user?.user) || {
     favourites: [],
   };
+  const dispatch = useDispatch();
 
-  const handleAddToCart = async (e: any) => {
+  const [value, setValue] = useState<number | null>(rating || 0);
+
+  // Directly derive from Redux state
+
+  const isFav = user.favourites.includes(id);
+
+  // const [isFav, setIsFav] = useState(user.favourites.includes(id)); // Local state
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!user || !user.email) {
       console.error("User not logged in");
@@ -59,6 +64,44 @@ const ItemCard: React.FC<ItemCardProps> = ({
       console.log(error);
     }
   };
+
+  const handleFavouriteToggle = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (!user || !user.id) {
+      console.error("User not logged in");
+      return;
+    }
+
+    try {
+      const productIdString = String(id);
+      let updatedFavourites;
+
+      if (isFav) {
+        // Remove from favourites
+        updatedFavourites = user.favourites.filter(
+          (favId) => favId !== productIdString
+        );
+      } else {
+        // Add to favourites
+        updatedFavourites = [...user.favourites, productIdString];
+      }
+
+      // Update backend
+      await axios.patch(`http://localhost:4000/userdata/${user.id}`, {
+        favourites: updatedFavourites,
+      });
+
+      // Update Redux store
+      dispatch(toggleFavourite(productIdString));
+    } catch (error) {
+      console.error("Error updating favourites:", error);
+    }
+  };
+
+  // useEffect(() => {
+  //   setIsFav(user.favourites.includes(id));
+  // }, [user.favourites]);
 
   return (
     <Card
@@ -88,15 +131,16 @@ const ItemCard: React.FC<ItemCardProps> = ({
         <IconButton
           aria-label="add to favorites"
           disableRipple
+          onClick={handleFavouriteToggle}
           sx={{
             position: "absolute",
-            top: 10, // Adjust position
-            right: 10, // Adjust position
-            backgroundColor: "rgba(255, 255, 255, 0.7)", // Optional: Background for visibility
+            top: 10,
+            right: 10,
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
             borderRadius: "50%",
             "&:hover": { backgroundColor: "transparent" },
           }}>
-          <FavoriteIcon />
+          <FavoriteIcon sx={{ color: isFav ? "red" : "gray" }} />
         </IconButton>
 
         {/* Image */}

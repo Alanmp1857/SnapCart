@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import ItemCard from "../../components/ItemCard";
-import { Container, Typography, Grid2, Button } from "@mui/material";
-import { setUser } from "../../store/reducers/userSlice";
+import { Container, Typography, Button, Grid2 } from "@mui/material";
+import { toggleFavourite } from "../../store/reducers/userSlice";
 import { ItemCardProps } from "../../models/ItemCard.interface";
 
 const FavouritesPage: React.FC = () => {
@@ -13,10 +13,11 @@ const FavouritesPage: React.FC = () => {
 
   useEffect(() => {
     const fetchFavouriteProducts = async () => {
-      if (!user.favourites.length) {
+      if (!user || !user.favourites.length) {
         setFavProducts([]);
         return;
       }
+
       try {
         const responses = await Promise.all(
           user.favourites.map((id) =>
@@ -25,6 +26,7 @@ const FavouritesPage: React.FC = () => {
             )
           )
         );
+
         setFavProducts(responses);
       } catch (error) {
         console.error("Fetch failed:", error);
@@ -34,33 +36,34 @@ const FavouritesPage: React.FC = () => {
     fetchFavouriteProducts();
   }, [user.favourites]);
 
-  const handleRemoveFromFavourites = async (id: string) => {
-    console.log(`Removing product with id: ${id} for user: ${user.id}`);
+  const handleRemoveFromFavourites = async (productId: string) => {
+    if (!user || !user.id) return;
 
-    const url = `http://localhost:4000/userdata/${user.id}`;
-    console.log(`Making PATCH request to: ${url}`); // Log the URL
+    // Check if the product exists in user's favourites before removing
+    if (!user.favourites.includes(productId)) {
+      console.warn("Product not found in favourites.");
+      return;
+    }
 
-    // Remove the product id from the user's favourites array
-    const updatedFavourites = user.favourites.filter(
-      (favId) => favId !== JSON.stringify(id)
-    ); // Convert to number
+    const updatedFavourites = user.favourites.filter((id) => id !== productId);
 
     try {
-      // Send a PATCH request to update the user's favourites
-      const response = await fetch(url, {
+      // Send PATCH request to update favourites in backend
+      await fetch(`http://localhost:4000/userdata/${user.id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ favourites: updatedFavourites }),
       });
 
-      if (response.ok) {
-        const updatedUser = await response.json();
-        dispatch(setUser(updatedUser));
-      } else {
-        console.error("Error removing favourite:", response.status);
-      }
+      // Update Redux store (remove from user.favourites)
+      dispatch(toggleFavourite(productId));
+
+      // Immediately update local state (UI reflects change instantly)
+      setFavProducts((prev) => prev.filter((fav) => fav.id !== productId));
     } catch (error) {
-      console.error("Error removing favourite:", error);
+      console.error("Failed to remove favourite:", error);
     }
   };
 
@@ -74,10 +77,12 @@ const FavouritesPage: React.FC = () => {
       ) : (
         <Grid2 container spacing={3}>
           {favProducts.map((fav) => (
-            <Grid2 item key={fav.id} xs={12} sm={6} md={4}>
+            <Grid2 key={fav.id}>
               <ItemCard
                 {...fav}
-                isFavourite={user.favourites.includes(fav.id)}
+                isFavourite={favProducts.some(
+                  (product) => product.id === fav.id
+                )} // Dynamically set isFavourite
                 onRemove={() => handleRemoveFromFavourites(fav.id)}
               />
               <Button onClick={() => handleRemoveFromFavourites(fav.id)}>

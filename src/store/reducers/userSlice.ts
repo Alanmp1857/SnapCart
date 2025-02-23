@@ -50,13 +50,24 @@ const userSlice = createSlice({
       );
     },
 
+    // toggleFavourite: (state, action: PayloadAction<string>) => {
+    //   if (state.user.favourites.includes(action.payload)) {
+    //     state.user.favourites = state.user.favourites.filter(
+    //       (item) => item !== action.payload
+    //     );
+    //   } else {
+    //     state.user.favourites.push(action.payload);
+    //   }
+    // },
+
     toggleFavourite: (state, action: PayloadAction<string>) => {
-      if (state.user.favourites.includes(action.payload)) {
+      const productId = action.payload;
+      if (state.user.favourites.includes(productId)) {
         state.user.favourites = state.user.favourites.filter(
-          (item) => item !== action.payload
+          (id) => id !== productId
         );
       } else {
-        state.user.favourites.push(action.payload);
+        state.user.favourites = [...state.user.favourites, productId]; // Ensure immutability
       }
     },
   },
