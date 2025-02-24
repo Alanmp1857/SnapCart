@@ -22,6 +22,7 @@ const initialState: UserState = {
     password: "",
     wallet: 0,
     favourites: [], // Explicitly typed
+    orders: [],
   },
 };
 

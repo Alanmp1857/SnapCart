@@ -24,8 +24,8 @@ import CartService from "../../services/CartService";
 import { MenuItem } from "@mui/material";
 import React from "react";
 import Switch from "../../components/Switch";
-
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -97,9 +97,9 @@ function Header() {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: theme === "light" ? "#6666FF" : "#00114D",
+          backgroundColor: theme === "light" ? "#1976d2" : "black",
           // color: backgroundColor,
-          color:"white"
+          color: "white",
         }}
       >
         <Container maxWidth="xl">
@@ -122,7 +122,6 @@ function Header() {
             >
               SnapCart
             </Typography>
-
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -186,11 +185,6 @@ function Header() {
                 Categories
               </Button>
               <Button
-                onClick={handleThemeToggle}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
-                {theme}
-              </Button>
-              <Button
                 onClick={() => navigate("/favorites")}
                 sx={{ my: 2, color: "inherit", display: "block" }}
               >
@@ -215,6 +209,13 @@ function Header() {
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
                 />
+              )}
+            </Box>
+            <Box onClick={handleThemeToggle} sx={{ cursor: "pointer", mr: 2 }}>
+              {theme === "light" ? (
+                <LightModeIcon fontSize="large" />
+              ) : (
+                <DarkModeIcon fontSize="large" />
               )}
             </Box>
             <Box
