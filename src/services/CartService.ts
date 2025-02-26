@@ -1,6 +1,12 @@
 import axios from "axios";
 import { CartItem } from "../models/CartItem.interface";
 
+const BASE_URL = "http://localhost:4000/userdata";
+
+const addToCart = (userId: string, cart: any) => {
+  return axios.patch(BASE_URL + "/" + userId, cart);
+};
+
 const GetAllCartItems = async (): Promise<any> => {
   try {
     const response = await axios.get("http://localhost:4000/cartdata");
@@ -81,6 +87,7 @@ const IsExisting = async (item: any): Promise<CartId> => {
 };
 
 const CartService = {
+  addToCart,
   GetAllCartItems,
   AddToCart,
   DeleteCartItem,

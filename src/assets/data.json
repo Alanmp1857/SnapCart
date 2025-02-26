@@ -13,7 +13,77 @@
         }
       ],
       "password": "password",
-      "wallet": 11000
+      "wallet": 11000,
+      "favourites": [],
+      "orders": [
+        [
+          {
+            "productId": "5fad",
+            "quantity": 3
+          },
+          {
+            "productId": "d6c0",
+            "quantity": 4
+          }
+        ],
+        [
+          {
+            "productId": "3bb5",
+            "quantity": 3
+          },
+          {
+            "productId": "d494",
+            "quantity": 4
+          },
+          {
+            "productId": "5f63",
+            "quantity": 4
+          }
+        ],
+        [
+          {
+            "productId": "3917",
+            "quantity": 5
+          },
+          {
+            "productId": "c7bf",
+            "quantity": 5
+          }
+        ],
+        [
+          {
+            "productId": "bed4",
+            "quantity": 3
+          }
+        ],
+        [
+          {
+            "productId": "8674",
+            "quantity": 4
+          }
+        ],
+        [
+          {
+            "productId": "b8ae",
+            "quantity": 3
+          }
+        ]
+      ],
+      "item": {
+        "userId": "9935",
+        "email": "email2@gmail.com",
+        "productid": "101",
+        "title": "Apple AirPods Max Silver",
+        "price": 549.99,
+        "thumbnail": "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20AirPods%20Max%20Silver/thumbnail.png",
+        "quantity": 1
+      },
+      "cart": [
+        {
+          "productId": "101",
+          "quantity": 1
+        }
+      ]
     },
     {
       "id": "9a42",
@@ -12013,62 +12083,12 @@
     {
       "userId": "9935",
       "email": "email2@gmail.com",
-      "productid": "166",
-      "title": "Tartan Dress",
-      "price": 39.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/tops/Tartan%20Dress/thumbnail.png",
-      "quantity": 3,
-      "id": "5a29"
-    },
-    {
-      "id": "5d5c",
-      "userId": "9935",
-      "email": "email2@gmail.com",
-      "productid": "163",
-      "title": "Girl Summer Dress",
-      "price": 19.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/tops/Girl%20Summer%20Dress/thumbnail.png",
-      "quantity": 1
-    },
-    {
-      "id": "8dec",
-      "userId": "9935",
-      "email": "email2@gmail.com",
-      "productid": "192",
-      "title": "Rolex Datejust Women",
-      "price": 10999.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/womens-watches/Rolex%20Datejust%20Women/thumbnail.png",
-      "quantity": 1
-    },
-    {
-      "id": "91f0",
-      "userId": "9935",
-      "email": "email2@gmail.com",
-      "productid": "184",
-      "title": "Tropical Earring",
-      "price": 19.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/womens-jewellery/Tropical%20Earring/thumbnail.png",
-      "quantity": 1
-    },
-    {
-      "id": "0651",
-      "userId": "9935",
-      "email": "email2@gmail.com",
-      "productid": "159",
-      "title": "iPad Mini 2021 Starlight",
-      "price": 499.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/tablets/iPad%20Mini%202021%20Starlight/thumbnail.png",
-      "quantity": 1
-    },
-    {
-      "id": "a127",
-      "userId": "9935",
-      "email": "email2@gmail.com",
-      "productid": "4",
-      "title": "Red Lipstick",
-      "price": 12.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Lipstick/thumbnail.png",
-      "quantity": 1
+      "productid": "101",
+      "title": "Apple AirPods Max Silver",
+      "price": 549.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20AirPods%20Max%20Silver/thumbnail.png",
+      "quantity": 4,
+      "id": "edae"
     }
   ],
   "favourites": []

@@ -7,10 +7,10 @@ const themeSlice = createSlice({
     toggleTheme: (state) => {
       if (state.theme === 'light') {
         state.theme = 'dark';
-        state.backgroundColor = 'skyblue';
+        state.backgroundColor = '#191919';
       } else {
         state.theme = 'light';
-        state.backgroundColor = 'white';
+        state.backgroundColor = ' ';
       }
     },
   },

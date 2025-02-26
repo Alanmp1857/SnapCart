@@ -19,29 +19,72 @@ import {
 } from "@mui/material";
 import "./OrderSummary.css"; // Import external CSS
 import { useNavigate } from "react-router";
+import orderService from "../../../services/orderService";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+import CartService from "../../../services/CartService";
+import { OrderProps } from "../../../models/UserProps.interface";
+import { addOrders } from "../../../store/reducers/userSlice";
 
-const OrderSummary = ({ cartList }: { cartList: any[] }) => {
+const OrderSummary = ({ cartList, refreshData }: any) => {
   const [couponCode, setCouponCode] = useState("");
   const [subTotal, setSubTotal] = useState(0);
   const [open, setOpen] = useState(false);
-  const navigate=useNavigate();
-  console.log(cartList);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user?.user);
+  console.log("User", user);
 
   const handleApplyCoupon = () => {
     // Handle coupon code application logic here
   };
 
-  const handlePayment = () => {
+  const handleDeleteCartItems = async () => {
+    try {
+      await cartList.map((item: any) => CartService.DeleteCartItem(item.id));
+      refreshData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePayment = async () => {
     setOpen(true);
+  };
+
+  const paymentDone = async () => {
+    const orders: any = Array.isArray(user.orders) ? [...user.orders] : [];
+    const orderList = [];
+    for (let i = 0; i < cartList.length; i++) {
+      const order: OrderProps = {
+        productId: String(cartList[i].id),
+        quantity: parseInt(cartList[i].quantity, 10),
+      };
+      orderList.push(order);
+    }
+    dispatch(addOrders(orderList));
+
+    orders.push(orderList);
+
+    try {
+      await orderService.addOrders(user.id, { orders }); // Ensure this matches the API's expected format
+      await handleDeleteCartItems();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleClose = () => {
     setOpen(false);
+    paymentDone();
   };
 
   useEffect(() => {
     setSubTotal(
-      cartList.reduce((total, item) => total + item.price * item.quantity, 0)
+      cartList.reduce(
+        (total: number, item: any) => total + item.price * item.quantity,
+        0
+      )
     );
   }, [cartList]);
 
@@ -164,10 +207,7 @@ const OrderSummary = ({ cartList }: { cartList: any[] }) => {
           </Button>
         </Box>
       </CardContent>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Payment Successful</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -176,7 +216,15 @@ const OrderSummary = ({ cartList }: { cartList: any[] }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" onClick={()=>navigate("/")}>Continue Shopping</Button>
+          <Button
+            type="submit"
+            onClick={() => {
+              navigate("/");
+              paymentDone();
+            }}
+          >
+            Continue Shopping
+          </Button>
         </DialogActions>
       </Dialog>
     </Card>
