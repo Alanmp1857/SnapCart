@@ -57,8 +57,11 @@ const ItemCard: React.FC<ItemCardProps> = ({
       quantity: 1,
     };
     console.log(item);
+    const cartList = user.cart || [];
+    cartList.push({ productId: item.productid, quantity: item.quantity });
     try {
       await CartService.AddToCart(item);
+      await CartService.addToCart(user.id, { cart: cartList });
       dispatch(cartClick());
     } catch (error) {
       console.log(error);
@@ -124,7 +127,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
           backgroundColor: "lightgray",
           border: "1px solid black",
         },
-      }}>
+      }}
+    >
       {/* Ensure relative positioning for absolute children */}
       <CardActionArea disableRipple>
         {/* Favorite Icon Positioned Over Image */}
@@ -139,7 +143,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
             backgroundColor: "rgba(255, 255, 255, 0.7)",
             borderRadius: "50%",
             "&:hover": { backgroundColor: "transparent" },
-          }}>
+          }}
+        >
           <FavoriteIcon sx={{ color: isFav ? "red" : "gray" }} />
         </IconButton>
 
@@ -177,7 +182,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
               display: "flex",
               alignItems: "center",
               paddingTop: 2,
-            }}>
+            }}
+          >
             <Rating
               name="simple-controlled"
               value={value}

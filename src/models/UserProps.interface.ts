@@ -6,7 +6,7 @@ export interface AddressProps {
 }
 
 export interface OrderProps {
-  id: string;
+  productId: string;
   quantity: number;
 }
 
@@ -18,5 +18,6 @@ export interface UserProps {
   password: string;
   wallet: number;
   favourites: string[];
-  orders: OrderProps[];
+  orders: OrderProps[][];
+  cart: OrderProps[];
 }

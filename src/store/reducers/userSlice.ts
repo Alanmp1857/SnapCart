@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AddressProps, UserProps } from "../../models/UserProps.interface";
+import {
+  AddressProps,
+  OrderProps,
+  UserProps,
+} from "../../models/UserProps.interface";
 
 // Define the initial state explicitly with the correct type
 interface UserState {
@@ -37,6 +41,10 @@ const userSlice = createSlice({
     updateAddress: (state, action: PayloadAction<AddressProps>) => {
       // Updating the first address in the array
       state.user.address[0] = { ...state.user.address[0], ...action.payload };
+    },
+
+    addOrders: (state, action: PayloadAction<OrderProps[]>) => {
+      state.user.orders.push(action.payload);
     },
 
     addFavourite: (state, action: PayloadAction<string>) => {
@@ -77,6 +85,7 @@ const userSlice = createSlice({
 export const {
   setUser,
   updateAddress,
+  addOrders,
   addFavourite,
   removeFavourite,
   toggleFavourite,

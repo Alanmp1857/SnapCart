@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import CategoryProducts from "./pages/CategoryProducts/CategoryProducts";
 import Wallet from "./pages/Wallet/Wallet";
 import Favourite from "./pages/Favourites/Favourite";
+import Orders from "./pages/Orders/Orders";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/favorites" element={<Favourite />} />
           <Route path="/wallet" element={<Wallet />}></Route>
+          <Route path="/orders" element={<Orders />}></Route>
         </Routes>
       </Router>
     </>

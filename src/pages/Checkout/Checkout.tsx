@@ -48,7 +48,7 @@ const Checkout: React.FC = () => {
 
           {/* Right Section - Order Summary */}
           <div className="checkout-right">
-            <OrderSummary cartList={cartList} />
+            <OrderSummary cartList={cartList} refreshData={RefreshData}/>
           </div>
         </>
       ) : (
