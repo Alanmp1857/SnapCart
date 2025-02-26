@@ -55,7 +55,11 @@ const SearchResultList: React.FC<SearchResultListProps> = ({
   };
 
   return (
-    <Box sx={{ borderRadius: 5 }}>
+    <Box
+      sx={{
+        borderRadius: "5px",
+        overflow: "hidden",
+      }}>
       <Box>
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}

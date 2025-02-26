@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import AdbIcon from "@mui/icons-material/Adb";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Authentication from "../../pages/Authentication/Authentication";
 import { RootState } from "../../store/store";
 import { toggleTheme } from "../../store/reducers/themeSlice";
@@ -28,17 +28,18 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 function Header() {
+  const searchBarRef = useRef<HTMLDivElement | null>(null);
+
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [auth, setAuth] = useState("login");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [cartItemsCount, setCartItemsCount] = useState(0);
+  const [searchBarWidth, setSearchBarWidth] = useState<number>(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { theme, backgroundColor } = useSelector(
-    (state: RootState) => state.theme
-  );
+  const { theme } = useSelector((state: RootState) => state.theme);
   const { user } = useSelector((state: RootState) => state.user);
   const { cartClickCount } = useSelector((state: RootState) => state.cartCount);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -92,6 +93,23 @@ function Header() {
     getCartItemsCount();
   }, [cartClickCount]);
 
+  // For SearchBar Results Resize
+  useEffect(() => {
+    if (searchBarRef.current) {
+      setSearchBarWidth(searchBarRef.current.offsetWidth);
+    }
+
+    const handleResize = () => {
+      if (searchBarRef.current) {
+        setSearchBarWidth(searchBarRef.current.offsetWidth);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <AppBar
@@ -100,8 +118,7 @@ function Header() {
           backgroundColor: theme === "light" ? "#1976d2" : "black",
           // color: backgroundColor,
           color: "white",
-        }}
-      >
+        }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -118,8 +135,7 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
+              }}>
               SnapCart
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -129,8 +145,7 @@ function Header() {
                 aria-controls="menu-appbar"
                 aria-hasAuthentication="true"
                 onClick={handleOpenNavMenu}
-                color="inherit"
-              >
+                color="inherit">
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -147,8 +162,7 @@ function Header() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}
-              >
+                sx={{ display: { xs: "block", md: "none" } }}>
                 {/* pending for optimization */}
                 {/* {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -173,37 +187,36 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
+              }}>
               SnapCart
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 onClick={() => navigate("/category")}
-                sx={{ my: 2, color: "inherit", display: "block" }}
-              >
+                sx={{ my: 2, color: "inherit", display: "block" }}>
                 Categories
               </Button>
               <Button
                 onClick={() => navigate("/favorites")}
-                sx={{ my: 2, color: "inherit", display: "block" }}
-              >
+                sx={{ my: 2, color: "inherit", display: "block" }}>
                 Favourites
               </Button>
             </Box>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <Box
+              sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+              ref={searchBarRef}>
               <SearchBar onSearch={setSearchQuery} />
             </Box>
             <Box
-              style={{
+              sx={{
                 position: "fixed",
                 zIndex: 100,
                 top: 60,
                 right: 0,
                 left: 850,
-                width: "80%",
-              }}
-            >
+                width: searchBarWidth, // Dynamically set width
+                minWidth: "70rem",
+              }}>
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}
@@ -224,8 +237,7 @@ function Header() {
                 justifyContent: "center",
                 alignItems: "center",
                 flexGrow: 0,
-              }}
-            >
+              }}>
               <Box
                 sx={{
                   position: "relative",
@@ -233,8 +245,7 @@ function Header() {
                   mr: 2,
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/cart")}
-              >
+                onClick={() => navigate("/cart")}>
                 <ShoppingCartIcon fontSize="large" />
                 {cartItemsCount > 0 && (
                   <Button
@@ -249,8 +260,7 @@ function Header() {
                       color: "white",
                       minWidth: "20px",
                       height: "20px",
-                    }}
-                  >
+                    }}>
                     {cartItemsCount}
                   </Button>
                 )}
@@ -280,39 +290,35 @@ function Header() {
                       horizontal: "right",
                     }}
                     open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
-                  >
+                    onClose={handleCloseUserMenu}>
                     <MenuItem
-                      onClick={handleCloseUserMenu}
-                      sx={{
-                        width: "150px",
+                      onClick={() => {
+                        navigate("/profile");
+                        handleCloseUserMenu();
                       }}
-                    >
-                      Profile
-                    </MenuItem>
-                    <MenuItem
                       sx={{
                         width: "150px",
-                        height: "50px",
-                        borderTop: 1,
                         borderBottom: 1,
                         boxShadow: "0px 0px 50px lightgray inset",
-                      }}
-                    >
-                      Theme
-                      <Switch
-                        checked={theme === "dark"}
-                        onChange={handleThemeToggle}
-                      />
+                      }}>
+                      Profile
                     </MenuItem>
+
                     <MenuItem
                       onClick={() => {
                         navigate("/wallet");
                         handleCloseUserMenu();
                       }}
-                      sx={{ width: "150px", borderBottom: 1 }}
-                    >
+                      sx={{ width: "150px", borderBottom: 1 }}>
                       Wallet
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        navigate("/orders");
+                        handleCloseUserMenu();
+                      }}
+                      sx={{ width: "150px", borderBottom: 1 }}>
+                      Orders
                     </MenuItem>
                     <MenuItem
                       sx={{
@@ -331,8 +337,7 @@ function Header() {
                           })
                         );
                         handleCloseUserMenu();
-                      }}
-                    >
+                      }}>
                       Logout
                     </MenuItem>
                   </Menu>
@@ -341,8 +346,7 @@ function Header() {
               ) : (
                 <Button
                   onClick={() => setOpen(true)}
-                  sx={{ my: 2, color: "inherit", display: "block" }}
-                >
+                  sx={{ my: 2, color: "inherit", display: "block" }}>
                   Login
                 </Button>
               )}

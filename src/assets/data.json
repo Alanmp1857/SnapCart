@@ -91,14 +91,16 @@
       "email": "alan@gmail.com",
       "address": [
         {
-          "city": "nashik",
+          "city": "trivandrum",
           "state": "kerala",
           "zipCode": "2423423",
           "mobile": "354533542"
         }
       ],
       "password": "alan123",
+      "wallet": 62,
       "favourites": [
+        "34",
         "7"
       ]
     }
@@ -12083,12 +12085,72 @@
     {
       "userId": "9935",
       "email": "email2@gmail.com",
-      "productid": "101",
-      "title": "Apple AirPods Max Silver",
-      "price": 549.99,
-      "thumbnail": "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20AirPods%20Max%20Silver/thumbnail.png",
-      "quantity": 4,
-      "id": "edae"
+      "productid": "166",
+      "title": "Tartan Dress",
+      "price": 39.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/tops/Tartan%20Dress/thumbnail.png",
+      "quantity": 3,
+      "id": "5a29"
+    },
+    {
+      "id": "5d5c",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "163",
+      "title": "Girl Summer Dress",
+      "price": 19.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/tops/Girl%20Summer%20Dress/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "8dec",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "192",
+      "title": "Rolex Datejust Women",
+      "price": 10999.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/womens-watches/Rolex%20Datejust%20Women/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "91f0",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "184",
+      "title": "Tropical Earring",
+      "price": 19.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/womens-jewellery/Tropical%20Earring/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "0651",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "159",
+      "title": "iPad Mini 2021 Starlight",
+      "price": 499.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/tablets/iPad%20Mini%202021%20Starlight/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "a127",
+      "userId": "9935",
+      "email": "email2@gmail.com",
+      "productid": "4",
+      "title": "Red Lipstick",
+      "price": 12.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Lipstick/thumbnail.png",
+      "quantity": 1
+    },
+    {
+      "id": "decd",
+      "userId": "9a42",
+      "email": "alan@gmail.com",
+      "productid": "34",
+      "title": "Nescafe Coffee",
+      "price": 7.99,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/groceries/Nescafe%20Coffee/thumbnail.png",
+      "quantity": 1
     }
   ],
   "favourites": []

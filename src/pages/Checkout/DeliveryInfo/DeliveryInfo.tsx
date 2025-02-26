@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import UserService from "../../../services/userService";
-import { setUser, updateAddress } from "../../../store/reducers/userSlice";
+import { setUser } from "../../../store/reducers/userSlice";
 
 const DeliveryInfo = () => {
   const dispatch = useDispatch();
@@ -24,18 +24,6 @@ const DeliveryInfo = () => {
   const [zipCode, setZipCode] = useState(user.address[0]?.zipCode || "");
   const [mobile, setMobile] = useState(user.address[0]?.mobile || "");
   const [username, setUsername] = useState(user.username || "");
-
-  // Update the address in the Redux store
-  const handleUpdateAddress = () => {
-    const updatedAddress = { city, state, zipCode, mobile };
-    dispatch(updateAddress(updatedAddress)); // Update the user's address
-  };
-
-  // Update the user object in the Redux store (like username or email)
-  const handleUpdateUser = () => {
-    const updatedUser = { username }; // Example of updating the user data
-    dispatch(setUser(updatedUser)); // Update the user object (username in this case)
-  };
 
   // Save the user data back to the server
   const handleSaveAddress = async () => {

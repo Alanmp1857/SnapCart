@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import ItemCard from "../../components/ItemCard";
-import { Container, Typography, Button, Grid2 } from "@mui/material";
+import { Container, Typography, Button, Grid2, Box } from "@mui/material";
 import { toggleFavourite } from "../../store/reducers/userSlice";
 import { ItemCardProps } from "../../models/ItemCard.interface";
+import EmptyFavourite from "./EmptyFavourite/EmptyFavourite";
 
 const FavouritesPage: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
+
+  const { backgroundColor } = useSelector((state: RootState) => state.theme);
+
   const [favProducts, setFavProducts] = useState<ItemCardProps[]>([]);
   const dispatch = useDispatch();
 
@@ -68,31 +72,37 @@ const FavouritesPage: React.FC = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Your Favourites
-      </Typography>
-      {favProducts.length === 0 ? (
-        <Typography>No favourite products yet.</Typography>
+    <Box sx={{ backgroundColor }}>
+      {!user.email ? (
+        <EmptyFavourite isLoggedin={user.email ? true : false} />
       ) : (
-        <Grid2 container spacing={3}>
-          {favProducts.map((fav) => (
-            <Grid2 key={fav.id}>
-              <ItemCard
-                {...fav}
-                isFavourite={favProducts.some(
-                  (product) => product.id === fav.id
-                )} // Dynamically set isFavourite
-                onRemove={() => handleRemoveFromFavourites(fav.id)}
-              />
-              <Button onClick={() => handleRemoveFromFavourites(fav.id)}>
-                Remove
-              </Button>
+        <>
+          <Typography variant="h4" gutterBottom>
+            Your Favourites
+          </Typography>
+          {favProducts.length === 0 ? (
+            <Typography>No favourite products yet.</Typography>
+          ) : (
+            <Grid2 container spacing={3}>
+              {favProducts.map((fav) => (
+                <Grid2 key={fav.id}>
+                  <ItemCard
+                    {...fav}
+                    isFavourite={favProducts.some(
+                      (product) => product.id === fav.id
+                    )}
+                    onRemove={() => handleRemoveFromFavourites(fav.id)}
+                  />
+                  <Button onClick={() => handleRemoveFromFavourites(fav.id)}>
+                    Remove
+                  </Button>
+                </Grid2>
+              ))}
             </Grid2>
-          ))}
-        </Grid2>
+          )}
+        </>
       )}
-    </Container>
+    </Box>
   );
 };
 

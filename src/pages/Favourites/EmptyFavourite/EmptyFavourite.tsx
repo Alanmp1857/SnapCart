@@ -1,23 +1,21 @@
 import { Box, Typography, Button } from "@mui/material";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import favourite from "../../../assets/favourite.jpg";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-import cart from "../../../assets/shopping-cart.jpg";
 
 export interface EmptyCartProps {
   isLoggedin: boolean;
 }
 
-const EmptyCart = ({ isLoggedin }: EmptyCartProps) => {
+const EmptyFavourite = ({ isLoggedin }: EmptyCartProps) => {
   const navigate = useNavigate();
+
   const { backgroundColor } = useSelector((state: RootState) => state.theme);
 
   return (
     <Box
       sx={{
-        position: "absolute", // Ensures it covers the entire screen
-        top: 40,
-        left: 0,
         height: "100vh",
         width: "100vw",
         display: "flex",
@@ -27,9 +25,9 @@ const EmptyCart = ({ isLoggedin }: EmptyCartProps) => {
         backgroundColor: backgroundColor,
       }}>
       <Typography sx={{ fontSize: "30px", fontWeight: "bold", color: "black" }}>
-        Your Cart is Empty
+        Please Login to view your Favourites
       </Typography>
-      <img src={cart} alt="" width="40%" style={{ margin: "20px 0px" }} />
+      <img src={favourite} alt="" style={{ margin: "20px 0px" }} />
       {isLoggedin ? (
         <Box
           sx={{
@@ -85,4 +83,4 @@ const EmptyCart = ({ isLoggedin }: EmptyCartProps) => {
   );
 };
 
-export default EmptyCart;
+export default EmptyFavourite;

@@ -4,8 +4,12 @@ import ProductService from "../../services/productService";
 import CategoryCard from "../../components/CategoryCard";
 import { useNavigate } from "react-router";
 import { CategoryProps } from "../../models/Category.interface";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const Category = () => {
+  const { backgroundColor } = useSelector((state: RootState) => state.theme);
+
   const [categories, setCategories] = useState<CategoryProps[]>([]);
   const navigate = useNavigate();
 
@@ -29,7 +33,7 @@ const Category = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: backgroundColor }}>
       <Typography sx={{ fontWeight: "bold", padding: 2, fontSize: "30px" }}>
         Get All Categories
       </Typography>

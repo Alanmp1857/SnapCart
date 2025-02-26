@@ -10,6 +10,7 @@ import CategoryProducts from "./pages/CategoryProducts/CategoryProducts";
 import Wallet from "./pages/Wallet/Wallet";
 import Favourite from "./pages/Favourites/Favourite";
 import Orders from "./pages/Orders/Orders";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/favorites" element={<Favourite />} />
           <Route path="/wallet" element={<Wallet />}></Route>
           <Route path="/orders" element={<Orders />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
         </Routes>
       </Router>
     </>
