@@ -1,97 +1,59 @@
 import axios from "axios";
-import { CartItem } from "../models/CartItem.interface";
 
 const BASE_URL = "http://localhost:4000/userdata";
 
-const addToCart = (userId: string, cart: any) => {
-  return axios.patch(BASE_URL + "/" + userId, cart);
+// Add item to cart
+const addToCart = (userId: string, cart: { productId: string; quantity: number }[]) => {
+  return axios.patch(`${BASE_URL}/${userId}`, { cart }); // Send entire cart array
 };
 
-const GetAllCartItems = async (): Promise<any> => {
+
+// Update quantity of a cart item
+const updateCartQuantity = async (
+  userId: string,
+  productId: string,
+  newQuantity: number
+) => {
   try {
-    const response = await axios.get("http://localhost:4000/cartdata");
-    return response; // Assuming the response data is an array of CartItem
+    return axios.patch(`${BASE_URL}/${userId}`, {
+      cart: [{ productId, quantity: newQuantity }],
+    });
   } catch (error) {
-    console.error("Error fetching cart items:", error);
-    throw error; // Re-throw the error to be handled by the caller
+    console.error("Error updating cart quantity:", error);
   }
 };
 
-const GetAllCartItemsData = async (): Promise<any> => {
+
+// Remove an item from the cart
+const removeFromCart = async (userId: string, productId: string) => {
   try {
-    const response = await axios.get("http://localhost:4000/cartdata");
-    return response.data; // Assuming the response data is an array of CartItem
-  } catch (error) {
-    console.error("Error fetching cart items:", error);
-    throw error; // Re-throw the error to be handled by the caller
-  }
-};
+    const response = await axios.get(`${BASE_URL}/${userId}`);
+    const userData = response.data;
 
-const AddToCart = async (item: any) => {
-  try {
-    const exists = await IsExisting(item);
-    if (exists.exists) {
-      return updateCart(item, exists.quantity + item.quantity, exists.id);
-    }
-    return axios.post("http://localhost:4000/cartdata", item);
-  } catch (error) {
-    console.error("Error adding to cart:", error);
-    throw error;
-  }
-};
-
-// Function to update an existing cart item
-const updateCart = (item: any, quantity: number, cartId: string) => {
-  return axios.put(`http://localhost:4000/cartdata/${cartId}`, {
-    ...item,
-    quantity: quantity,
-  });
-};
-
-// Function to delete an item from the cart
-const DeleteCartItem = (id: string) => {
-  return axios.delete(`http://localhost:4000/cartdata/${id}`);
-};
-
-// Interface to describe the response of IsExisting
-interface CartId {
-  id: string;
-  exists: boolean;
-  quantity: number;
-}
-
-// Function to check if an item already exists in the cart
-const IsExisting = async (item: any): Promise<CartId> => {
-  try {
-    const cartItems = await GetAllCartItemsData();
-    const existingItem = cartItems.find(
-      (cart: CartItem) =>
-        cart.productid === item.productid && cart.email === item.email
+    const updatedCart = userData.cart.filter(
+      (item: any) => item.productId !== productId
     );
-    if (existingItem) {
-      return {
-        id: existingItem.id,
-        exists: true,
-        quantity: existingItem.quantity,
-      };
-    }
-    return {
-      id: "",
-      exists: false,
-      quantity: 0,
-    };
+
+    return axios.patch(`${BASE_URL}/${userId}`, { cart: updatedCart });
   } catch (error) {
-    console.error("Error checking if item exists:", error);
-    throw error;
+    console.error("Error removing item from cart:", error);
+  }
+};
+
+// Remove all items from the cart
+const clearCart = async (userId: string) => {
+  try {
+    return axios.patch(`${BASE_URL}/${userId}`, { cart: [] });
+  } catch (error) {
+    console.error("Error clearing cart:", error);
   }
 };
 
 const CartService = {
   addToCart,
-  GetAllCartItems,
-  AddToCart,
-  DeleteCartItem,
-  updateCart,
+  updateCartQuantity,
+  removeFromCart,
+  clearCart,
 };
 
 export default CartService;

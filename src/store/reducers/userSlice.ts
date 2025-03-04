@@ -27,6 +27,7 @@ const initialState: UserState = {
     wallet: 0,
     favourites: [], // Explicitly typed
     orders: [],
+    cart: [],
   },
 };
 
@@ -45,6 +46,32 @@ const userSlice = createSlice({
 
     addOrders: (state, action: PayloadAction<OrderProps[]>) => {
       state.user.orders.push(action.payload);
+    },
+
+    addCart: (state, action: PayloadAction<OrderProps>) => {
+      const existingItem = state.user.cart.find(
+        (item) => item.productId === action.payload.productId
+      );
+    
+      if (existingItem) {
+        existingItem.quantity += action.payload.quantity; // Increment quantity
+      } else {
+        state.user.cart.push(action.payload);
+      }
+    },    
+
+    removeCart: (state, action: PayloadAction<string>) => {
+      state.user.cart = state.user.cart
+        .map((item) =>
+          item.productId === action.payload
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0);
+    },
+
+    removeAllCart: (state) => {
+      state.user.cart = [];
     },
 
     addFavourite: (state, action: PayloadAction<string>) => {
@@ -87,6 +114,9 @@ export const {
   updateAddress,
   addOrders,
   addFavourite,
+  addCart,
+  removeCart,
+  removeAllCart,
   removeFavourite,
   toggleFavourite,
 } = userSlice.actions;

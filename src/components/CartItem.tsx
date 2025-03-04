@@ -2,6 +2,9 @@ import { Grid, Typography, Button } from "@mui/material";
 import { CartItem as CartItemType } from "../models/CartItem.interface";
 import CartService from "../services/CartService";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { addCart, removeCart } from "../store/reducers/userSlice";
 
 interface CartItemProps {
   item: CartItemType;
@@ -9,7 +12,9 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item, refreshData }) => {
+  const { user } = useSelector((state: RootState) => state.user);
   const [values, setValues] = useState(item);
+  const dispatch = useDispatch();
 
   const updateCart = (item: any, quantity: number) => {
     setValues((prev) => ({
@@ -17,27 +22,37 @@ const CartItem: React.FC<CartItemProps> = ({ item, refreshData }) => {
       quantity: quantity,
     }));
     console.log(values);
+    refreshData();
     try {
-      CartService.updateCart(item, quantity, item.id);
+      CartService.updateCartQuantity(user.id, item.productid, quantity);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleIncrease = () => updateCart(item, values.quantity + 1);
+  const handleIncrease = () => {
+    dispatch(
+      addCart({ productId: values.productid, quantity:1 })
+    );
+    updateCart(values, values.quantity + 1);
+  };
+
   const handleDecrease = () => {
     if (values.quantity > 1) {
-      updateCart(item, values.quantity - 1);
+      dispatch(removeCart(values.productid)); // Fix: Call removeCart instead
+      updateCart(values, values.quantity - 1);
     } else {
       console.log("Deleted");
       try {
-        CartService.DeleteCartItem(values.id);
+        CartService.removeFromCart(user.id, values.productid);
+        dispatch(removeCart(values.productid));
         refreshData();
       } catch (error) {
         console.log(error);
       }
     }
   };
+  
 
   return (
     <Grid
