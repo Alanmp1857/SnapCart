@@ -20,28 +20,24 @@ import { setUser } from "../../store/reducers/userSlice";
 import SearchResultList from "../../components/SearchResultList";
 import { useNavigate } from "react-router";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CartService from "../../services/CartService";
 import { MenuItem } from "@mui/material";
 import React from "react";
-import Switch from "../../components/Switch";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import Badge from "@mui/material/Badge";
 
 function Header() {
   const searchBarRef = useRef<HTMLDivElement | null>(null);
-
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [auth, setAuth] = useState("login");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [cartItemsCount, setCartItemsCount] = useState(0);
   const [searchBarWidth, setSearchBarWidth] = useState<number>(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { theme } = useSelector((state: RootState) => state.theme);
   const { user } = useSelector((state: RootState) => state.user);
-  const { cartClickCount } = useSelector((state: RootState) => state.cartCount);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -52,21 +48,6 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-  };
-
-  const getCartItemsCount = async () => {
-    try {
-      const response = await CartService.GetAllCartItems();
-      setCartItemsCount(
-        response.data.filter((item: any) => item.userId === user.id).length
-      );
-      console.log(
-        response.data.filter((item: any) => item.userId === user.id).length,
-        response.data.filter((item: any) => item.userId === user.id)
-      );
-    } catch (error) {
-      console.error("Error fetching cart items Count:", error);
-    }
   };
 
   const handleThemeToggle = () => {
@@ -88,10 +69,6 @@ function Header() {
   const handleClose = () => {
     setOpen(false);
   };
-
-  useEffect(() => {
-    getCartItemsCount();
-  }, [cartClickCount]);
 
   // For SearchBar Results Resize
   useEffect(() => {
@@ -118,7 +95,8 @@ function Header() {
           backgroundColor: theme === "light" ? "#1976d2" : "black",
           // color: backgroundColor,
           color: "white",
-        }}>
+        }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -135,7 +113,8 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}>
+              }}
+            >
               SnapCart
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -145,7 +124,8 @@ function Header() {
                 aria-controls="menu-appbar"
                 aria-hasAuthentication="true"
                 onClick={handleOpenNavMenu}
-                color="inherit">
+                color="inherit"
+              >
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -162,7 +142,8 @@ function Header() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}>
+                sx={{ display: { xs: "block", md: "none" } }}
+              >
                 {/* pending for optimization */}
                 {/* {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -187,24 +168,28 @@ function Header() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}>
+              }}
+            >
               SnapCart
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 onClick={() => navigate("/category")}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
+                sx={{ my: 2, color: "inherit", display: "block" }}
+              >
                 Categories
               </Button>
               <Button
                 onClick={() => navigate("/favorites")}
-                sx={{ my: 2, color: "inherit", display: "block" }}>
+                sx={{ my: 2, color: "inherit", display: "block" }}
+              >
                 Favourites
               </Button>
             </Box>
             <Box
               sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
-              ref={searchBarRef}>
+              ref={searchBarRef}
+            >
               <SearchBar onSearch={setSearchQuery} />
             </Box>
             <Box
@@ -216,7 +201,8 @@ function Header() {
                 left: 850,
                 width: searchBarWidth, // Dynamically set width
                 minWidth: "70rem",
-              }}>
+              }}
+            >
               {searchQuery && (
                 <SearchResultList
                   searchQuery={searchQuery}
@@ -237,34 +223,16 @@ function Header() {
                 justifyContent: "center",
                 alignItems: "center",
                 flexGrow: 0,
-              }}>
-              <Box
-                sx={{
-                  position: "relative",
-                  display: "inline-block",
-                  mr: 2,
-                  cursor: "pointer",
-                }}
-                onClick={() => navigate("/cart")}>
+              }}
+            >
+              <Badge
+                badgeContent={user.cart?.length || 0}
+                color="error"
+                sx={{ mr: 2, cursor: "pointer" }}
+                onClick={() => navigate("/cart")}
+              >
                 <ShoppingCartIcon fontSize="large" />
-                {cartItemsCount > 0 && (
-                  <Button
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      right: 0,
-                      transform: "translate(40%, -40%)",
-                      borderRadius: "50%",
-                      border: "1px solid white",
-                      backgroundColor: "red",
-                      color: "white",
-                      minWidth: "20px",
-                      height: "20px",
-                    }}>
-                    {cartItemsCount}
-                  </Button>
-                )}
-              </Box>
+              </Badge>
 
               {user.username ? (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -290,7 +258,8 @@ function Header() {
                       horizontal: "right",
                     }}
                     open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}>
+                    onClose={handleCloseUserMenu}
+                  >
                     <MenuItem
                       onClick={() => {
                         navigate("/profile");
@@ -300,7 +269,8 @@ function Header() {
                         width: "150px",
                         borderBottom: 1,
                         boxShadow: "0px 0px 50px lightgray inset",
-                      }}>
+                      }}
+                    >
                       Profile
                     </MenuItem>
 
@@ -309,7 +279,8 @@ function Header() {
                         navigate("/wallet");
                         handleCloseUserMenu();
                       }}
-                      sx={{ width: "150px", borderBottom: 1 }}>
+                      sx={{ width: "150px", borderBottom: 1 }}
+                    >
                       Wallet
                     </MenuItem>
                     <MenuItem
@@ -317,7 +288,8 @@ function Header() {
                         navigate("/orders");
                         handleCloseUserMenu();
                       }}
-                      sx={{ width: "150px", borderBottom: 1 }}>
+                      sx={{ width: "150px", borderBottom: 1 }}
+                    >
                       Orders
                     </MenuItem>
                     <MenuItem
@@ -337,7 +309,8 @@ function Header() {
                           })
                         );
                         handleCloseUserMenu();
-                      }}>
+                      }}
+                    >
                       Logout
                     </MenuItem>
                   </Menu>
@@ -346,7 +319,8 @@ function Header() {
               ) : (
                 <Button
                   onClick={() => setOpen(true)}
-                  sx={{ my: 2, color: "inherit", display: "block" }}>
+                  sx={{ my: 2, color: "inherit", display: "block" }}
+                >
                   Login
                 </Button>
               )}

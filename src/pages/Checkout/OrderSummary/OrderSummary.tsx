@@ -22,9 +22,8 @@ import { useNavigate } from "react-router";
 import orderService from "../../../services/orderService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-import CartService from "../../../services/CartService";
 import { OrderProps } from "../../../models/UserProps.interface";
-import { addOrders } from "../../../store/reducers/userSlice";
+import { addOrders, setUser } from "../../../store/reducers/userSlice";
 
 const OrderSummary = ({ cartList, refreshData }: any) => {
   const [couponCode, setCouponCode] = useState("");
@@ -41,7 +40,7 @@ const OrderSummary = ({ cartList, refreshData }: any) => {
 
   const handleDeleteCartItems = async () => {
     try {
-      await cartList.map((item: any) => CartService.DeleteCartItem(item.id));
+      dispatch(setUser({ ...user, cart: [] }));
       refreshData();
     } catch (error) {
       console.log(error);

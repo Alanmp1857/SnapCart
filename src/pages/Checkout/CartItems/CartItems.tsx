@@ -1,6 +1,9 @@
 import { Card, CardContent, Typography, Divider, Button } from "@mui/material";
 import CartItem from "../../../components/CartItem";
 import CartService from "../../../services/CartService";
+import { useDispatch, useSelector } from "react-redux";
+import { removeAllCart } from "../../../store/reducers/userSlice";
+import { RootState } from "../../../store/store";
 
 const CartItems = ({
   cartList,
@@ -9,9 +12,14 @@ const CartItems = ({
   cartList: any[];
   refreshData: () => void;
 }) => {
-  const handleDeleteCartItems =async  () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const handleDeleteCartItems = async () => {
     try {
-      await cartList.map((item: any) => CartService.DeleteCartItem(item.id));
+      // await cartList.map((item: any) => CartService.DeleteCartItem(item.id));
+      await dispatch(removeAllCart());
+      await CartService.clearCart(user.id);
       refreshData();
     } catch (error) {
       console.log(error);
