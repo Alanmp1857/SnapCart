@@ -11,7 +11,9 @@ export interface EmptyCartProps {
 const EmptyFavourite = ({ isLoggedin }: EmptyCartProps) => {
   const navigate = useNavigate();
 
-  const { backgroundColor } = useSelector((state: RootState) => state.theme);
+  const { backgroundColor, theme } = useSelector(
+    (state: RootState) => state.theme
+  );
 
   return (
     <Box
@@ -24,7 +26,12 @@ const EmptyFavourite = ({ isLoggedin }: EmptyCartProps) => {
         justifyContent: "center",
         backgroundColor: backgroundColor,
       }}>
-      <Typography sx={{ fontSize: "30px", fontWeight: "bold", color: "black" }}>
+      <Typography
+        sx={{
+          fontSize: "30px",
+          fontWeight: "bold",
+          color: theme === "dark" ? "white" : "black",
+        }}>
         Please Login to view your Favourites
       </Typography>
       <img src={favourite} alt="" style={{ margin: "20px 0px" }} />

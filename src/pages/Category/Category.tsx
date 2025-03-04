@@ -8,7 +8,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
 const Category = () => {
-  const { backgroundColor } = useSelector((state: RootState) => state.theme);
+  const { backgroundColor, theme } = useSelector(
+    (state: RootState) => state.theme
+  );
 
   const [categories, setCategories] = useState<CategoryProps[]>([]);
   const navigate = useNavigate();
@@ -34,7 +36,13 @@ const Category = () => {
 
   return (
     <Box sx={{ backgroundColor: backgroundColor }}>
-      <Typography sx={{ fontWeight: "bold", padding: 2, fontSize: "30px" }}>
+      <Typography
+        sx={{
+          fontWeight: "bold",
+          padding: 2,
+          fontSize: "30px",
+          color: theme === "dark" ? "white" : "black",
+        }}>
         Get All Categories
       </Typography>
       <Box

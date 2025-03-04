@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -7,15 +6,16 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import Rating from "@mui/material/Rating";
 import CustomButton from "./CustomButton";
 import { ItemCardProps } from "../models/ItemCard.interface";
 import CartService from "../services/CartService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { cartClick } from "../store/reducers/cartCountSlice";
-import { toggleFavourite } from "../store/reducers/userSlice";
+import { toggleFavourite, addCart } from "../store/reducers/userSlice";
 import axios from "axios";
+import RatingBar from "./RatingBar";
+import { useState } from "react";
 
 const ItemCard: React.FC<ItemCardProps> = ({
   id,
@@ -23,48 +23,48 @@ const ItemCard: React.FC<ItemCardProps> = ({
   price,
   thumbnail,
   rating,
-  brand,
   reviews,
   category,
 }) => {
-  // const { user } = useSelector((state: RootState) => state.user);
   const user = useSelector((state: RootState) => state.user?.user) || {
     favourites: [],
   };
+  const { theme } = useSelector((state: RootState) => state.theme);
+  const cardColor = theme === "dark" ? "#1E1E1E" : "#FFFFFF";
+  const cardShadow =
+    theme === "dark"
+      ? "0 4px 10px rgba(255,255,255,0.1)"
+      : "0 4px 10px rgba(0,0,0,0.1)";
+  const fontColor = theme === "dark" ? "white" : "black";
+  const hoverColor = theme === "dark" ? "#292929" : "#F0F0F0";
+
   const dispatch = useDispatch();
-
   const [value, setValue] = useState<number | null>(rating || 0);
-
   // Directly derive from Redux state
-
   const isFav = user.favourites.includes(id);
-
-  // const [isFav, setIsFav] = useState(user.favourites.includes(id)); // Local state
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!user || !user.email) {
+
+    if (!user) {
       console.error("User not logged in");
       return;
     }
-    const item = {
-      userId: user.id,
-      email: user.email,
-      productid: id,
-      title,
-      price,
-      thumbnail,
+
+    const newItem = {
+      productId: id,
       quantity: 1,
     };
-    console.log(item);
-    const cartList = user.cart || [];
-    cartList.push({ productId: item.productid, quantity: item.quantity });
+
+    dispatch(addCart(newItem));
+
+    const updatedCart = [...(user.cart || []), newItem]; // Create a new array to avoid mutation
+
     try {
-      await CartService.AddToCart(item);
-      await CartService.addToCart(user.id, { cart: cartList });
+      await CartService.addToCart(user.id, updatedCart); // Send the updated cart list
       dispatch(cartClick());
     } catch (error) {
-      console.log(error);
+      console.error("Error adding to cart:", error);
     }
   };
 
@@ -102,10 +102,6 @@ const ItemCard: React.FC<ItemCardProps> = ({
     }
   };
 
-  // useEffect(() => {
-  //   setIsFav(user.favourites.includes(id));
-  // }, [user.favourites]);
-
   return (
     <Card
       sx={{
@@ -115,20 +111,18 @@ const ItemCard: React.FC<ItemCardProps> = ({
         width: "300px",
         position: "relative",
         boxShadow: "none",
-        border: "1px solid #e0e2e4",
         display: "flex", // Horizontal layout
         flexDirection: "column",
         justifyContent: "space-evenly",
         // alignItems: "center",
         overflow: "hidden",
-        backgroundColor: "#f5f5f5",
+        backgroundColor: cardColor,
+        WebkitBoxShadow: cardShadow,
         "&:hover": {
           transform: "scale(1.05)",
-          backgroundColor: "lightgray",
-          border: "1px solid black",
+          backgroundColor: hoverColor,
         },
-      }}
-    >
+      }}>
       {/* Ensure relative positioning for absolute children */}
       <CardActionArea disableRipple>
         {/* Favorite Icon Positioned Over Image */}
@@ -143,8 +137,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
             backgroundColor: "rgba(255, 255, 255, 0.7)",
             borderRadius: "50%",
             "&:hover": { backgroundColor: "transparent" },
-          }}
-        >
+          }}>
           <FavoriteIcon sx={{ color: isFav ? "red" : "gray" }} />
         </IconButton>
 
@@ -163,18 +156,16 @@ const ItemCard: React.FC<ItemCardProps> = ({
         {/* Product Details */}
         <CardContent sx={{ backgroundColor: "transparent" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h6">
+            <Typography variant="h6" sx={{ color: fontColor }}>
               {title.length > 20
                 ? title.slice(0, 20) + "..."
                 : title.slice(0, 20)}{" "}
-              | {brand}
             </Typography>
-            {/* <Typography gutterBottom variant="h6">
-              ${price}
-            </Typography> */}
           </div>
-          <Typography variant="h6">${price}</Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          <Typography variant="h6" sx={{ color: fontColor }}>
+            ${price}
+          </Typography>
+          <Typography variant="body2" sx={{ color: fontColor }}>
             {category}
           </Typography>
           <div
@@ -182,16 +173,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
               display: "flex",
               alignItems: "center",
               paddingTop: 2,
-            }}
-          >
-            <Rating
-              name="simple-controlled"
-              value={value}
-              onChange={(_, newValue) => {
-                setValue(newValue);
-              }}
-            />
-            <p>({reviews?.length})</p>
+            }}>
+            <RatingBar rating={rating} reviews={reviews} readOnly />
           </div>
         </CardContent>
         {/* Share Button */}

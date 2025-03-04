@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import ItemCard from "../../components/ItemCard";
-import { Container, Typography, Button, Grid2, Box } from "@mui/material";
+import { Typography, Button, Grid2, Box } from "@mui/material";
 import { toggleFavourite } from "../../store/reducers/userSlice";
 import { ItemCardProps } from "../../models/ItemCard.interface";
 import EmptyFavourite from "./EmptyFavourite/EmptyFavourite";
@@ -10,7 +10,10 @@ import EmptyFavourite from "./EmptyFavourite/EmptyFavourite";
 const FavouritesPage: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
 
-  const { backgroundColor } = useSelector((state: RootState) => state.theme);
+  const { backgroundColor, theme } = useSelector(
+    (state: RootState) => state.theme
+  );
+  const fontColor = theme === "dark" ? "white" : "black";
 
   const [favProducts, setFavProducts] = useState<ItemCardProps[]>([]);
   const dispatch = useDispatch();
@@ -72,16 +75,18 @@ const FavouritesPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor }}>
+    <Box sx={{ backgroundColor, height: "100vh", width: "100%" }}>
       {!user.email ? (
         <EmptyFavourite isLoggedin={user.email ? true : false} />
       ) : (
-        <>
-          <Typography variant="h4" gutterBottom>
+        <Box sx={{ padding: "30px" }}>
+          <Typography variant="h4" gutterBottom sx={{ color: fontColor }}>
             Your Favourites
           </Typography>
           {favProducts.length === 0 ? (
-            <Typography>No favourite products yet.</Typography>
+            <Typography sx={{ color: fontColor }}>
+              No favourite products yet.
+            </Typography>
           ) : (
             <Grid2 container spacing={3}>
               {favProducts.map((fav) => (
@@ -100,7 +105,7 @@ const FavouritesPage: React.FC = () => {
               ))}
             </Grid2>
           )}
-        </>
+        </Box>
       )}
     </Box>
   );

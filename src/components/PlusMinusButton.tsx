@@ -4,10 +4,10 @@ import Box from "@mui/material/Box";
 import { Button, styled, Typography } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const RoundedButtonLeft = styled(Button)({
-  backgroundColor: "#e5e5e5",
-  color: "white",
   padding: "10px 20px",
   fontSize: "16px",
   borderTopLeftRadius: "50%",
@@ -19,8 +19,6 @@ const RoundedButtonLeft = styled(Button)({
 });
 
 const RoundedButtonRight = styled(Button)({
-  backgroundColor: "#e5e5e5",
-  color: "white",
   padding: "10px 20px",
   fontSize: "16px",
   borderTopLeftRadius: "0",
@@ -37,6 +35,10 @@ const PlusMinusButton: React.FC<CounterProps> = ({
   max = 10,
   onChange,
 }) => {
+  const { theme } = useSelector((state: RootState) => state.theme);
+  const fontColor = theme === "dark" ? "white" : "black";
+  const bgColor = theme === "dark" ? "#343A40" : "#e5e5e5";
+
   const [count, setCount] = useState<number>(initialValue);
 
   // Reset count when initialValue prop changes
@@ -65,19 +67,30 @@ const PlusMinusButton: React.FC<CounterProps> = ({
       sx={{
         display: "flex",
         alignItems: "center",
+        color: theme === "dark" ? "white" : "black",
       }}>
-      <RoundedButtonLeft onClick={handleDecrement} disableRipple>
+      <RoundedButtonLeft
+        onClick={handleDecrement}
+        sx={{
+          color: fontColor,
+          backgroundColor: bgColor,
+        }}
+        disableRipple>
         <RemoveIcon />
       </RoundedButtonLeft>
       <Typography
         sx={{
-          backgroundColor: "#e5e5e5",
+          backgroundColor: bgColor,
+          color: fontColor,
           padding: 1.25,
           border: "none",
         }}>
         {count}
       </Typography>
-      <RoundedButtonRight onClick={handleIncrement} disableRipple>
+      <RoundedButtonRight
+        onClick={handleIncrement}
+        sx={{ color: fontColor, backgroundColor: bgColor }}
+        disableRipple>
         <AddIcon />
       </RoundedButtonRight>
     </Box>

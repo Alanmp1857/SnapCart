@@ -43,31 +43,18 @@ const ProductList = () => {
 
   return (
     <Box sx={{ backgroundColor: backgroundColor }}>
-      <Box>
-        {/* <h2
-          style={{
-            marginLeft: "20px",
-            paddingLeft: "20px",
-            paddingTop: "20px",
-            color: "inherit",
-          }}>
-          Popular Products for You!
-        </h2> */}
-      </Box>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>} {/* Display error message if fetch fails */}
       <Grid2
         container
         spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
+        columns={{ xs: 4, sm: 8, md: 12 }}>
         {results.map((items) => (
           <Box sx={{ margin: "20px", paddingLeft: "20px" }}>
             <Grid2
               container
               spacing={{ xs: 2, md: 3, lg: 5 }}
-              onClick={() => handleCardClick(items.id)}
-            >
+              onClick={() => handleCardClick(items.id)}>
               <ItemCard {...items} />
             </Grid2>
           </Box>

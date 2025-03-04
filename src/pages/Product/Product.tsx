@@ -16,7 +16,9 @@ import ProductService from "../../services/productService";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Product = () => {
-  const { backgroundColor } = useSelector((state: RootState) => state.theme);
+  const { backgroundColor, theme } = useSelector(
+    (state: RootState) => state.theme
+  );
 
   const [productDetails, setProductDetails] = React.useState<ProductProps>();
 
@@ -51,7 +53,7 @@ const Product = () => {
     <Box
       sx={{
         backgroundColor: backgroundColor,
-        color: backgroundColor === "#E3DDFF" ? "black" : "white",
+        color: theme === "dark" ? "white" : "black",
         paddingBottom: "20px",
         paddingLeft: "20px",
       }}>
@@ -105,19 +107,13 @@ const Product = () => {
             <Divider sx={{ backgroundColor: "#e5e5e5" }} />
 
             <Box>
-              <Typography>Choose Color</Typography>
-            </Box>
-
-            <Divider sx={{ backgroundColor: "#e5e5e5" }} />
-
-            <Box>
               <PlusMinusButton
                 initialValue={productDetails?.minimumOrderQuantity ?? 1} // Fallback to 1 if undefined
                 min={productDetails?.minimumOrderQuantity ?? 1} // Same here for min
                 max={100}
                 onChange={() => {}}
               />
-              <Typography>
+              <Typography sx={{ mt: 1 }}>
                 Minimum Order Quantity: {productDetails?.minimumOrderQuantity}
               </Typography>
             </Box>

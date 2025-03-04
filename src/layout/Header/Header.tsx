@@ -198,7 +198,7 @@ function Header() {
                 zIndex: 100,
                 top: 60,
                 right: 0,
-                left: 850,
+                left: 650,
                 width: searchBarWidth, // Dynamically set width
                 minWidth: "70rem",
               }}

@@ -95,8 +95,15 @@
       "password": "alan123",
       "wallet": 62,
       "favourites": [
-        "34",
-        "7"
+        "43",
+        "78",
+        "79"
+      ],
+      "cart": [
+        {
+          "productId": "79",
+          "quantity": 1
+        }
       ]
     }
   ],

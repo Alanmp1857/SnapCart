@@ -73,6 +73,7 @@ const SearchResultList: React.FC<SearchResultListProps> = ({
               title={product.title}
               price={product.price}
               reviews={product.reviews}
+              rating={product.rating}
             />
           </Box>
         ))}

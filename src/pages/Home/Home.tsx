@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { Box } from "@mui/material";
-import Banner from "../../assets/banner.jpg";
+import bannerDark from "../../assets/banner-dark.jpg";
+import bannerLight from "../../assets/banner-light.jpg";
 import ProductList from "../ProductList/ProductList";
 
 const Home = () => {
-  const { backgroundColor } = useSelector((state: RootState) => state.theme);
+  const { backgroundColor, theme } = useSelector(
+    (state: RootState) => state.theme
+  );
 
   return (
     <Box
@@ -23,7 +26,7 @@ const Home = () => {
           backgroundColor: backgroundColor,
         }}>
         <img
-          src={Banner}
+          src={theme === "dark" ? bannerLight : bannerDark}
           alt="Banner"
           style={{ width: "90%", height: "400px" }}
         />
@@ -34,6 +37,7 @@ const Home = () => {
             marginLeft: "20px",
             paddingLeft: "20px",
             paddingTop: "20px",
+            color: theme === "dark" ? "white" : "black",
           }}>
           Popular Products for You!
         </h2>

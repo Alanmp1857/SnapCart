@@ -6,8 +6,14 @@ import ItemCard from "../../components/ItemCard";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductService from "../../services/productService"; // Assuming this service exists
 import { Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const CategoryProducts = () => {
+  const { backgroundColor, theme } = useSelector(
+    (state: RootState) => state.theme
+  );
+
   const [products, setProducts] = useState<ItemCardProps[]>([]);
   const { slug } = useParams(); // Get the `slug` from the URL
   const navigate = useNavigate();
@@ -33,8 +39,14 @@ const CategoryProducts = () => {
   };
 
   return (
-    <Box>
-      <Typography sx={{ fontWeight: "bold", padding: 2, fontSize: "30px" }}>
+    <Box sx={{ backgroundColor: backgroundColor }}>
+      <Typography
+        sx={{
+          fontWeight: "bold",
+          padding: 2,
+          fontSize: "30px",
+          color: theme === "dark" ? "white" : "black",
+        }}>
         List of Products in {slug}
       </Typography>
       <Grid2
