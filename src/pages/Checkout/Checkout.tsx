@@ -9,7 +9,6 @@ import EmptyCart from "./EmptyCart/EmptyCart";
 import { cartClick } from "../../store/reducers/cartCountSlice";
 import ProductService from "../../services/productService";
 import { Box, Typography } from "@mui/material";
-import CartService from "../../services/CartService";
 
 const Checkout: React.FC = () => {
   const [cartList, setCartList] = useState<any[]>([]);
@@ -19,18 +18,6 @@ const Checkout: React.FC = () => {
   const { backgroundColor, theme } = useSelector(
     (state: RootState) => state.theme
   );
-  const { cartClickCount } = useSelector((state: RootState) => state.cartCount);
-
-  const getAllCartItems = async (userId: string) => {
-    try {
-      const cartItems = await CartService.GetAllCartItems();
-      console.log(cartItems.data, " hHi", userId);
-      setCartList(cartItems.data.filter((item: any) => item.userId === userId));
-    } catch (error) {
-      console.error(error.response?.data || error.message);
-      setCartList([]); // Ensure state remains an empty array on failure
-    }
-  };
 
   const fetchCartList = async () => {
     try {
